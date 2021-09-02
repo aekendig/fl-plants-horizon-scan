@@ -1,0 +1,8 @@
+﻿ID,Major group,Family,Genus hybrid marker,Genus,Species hybrid marker,Species,Infraspecific rank,Infraspecific epithet,Authorship,Taxonomic status in TPL,Nomenclatural status from original data source,Confidence level,Source,Source id,IPNI id,Publication,Collation,Page,Date
+kew-2832043,A,Montiniaceae,,Grevea,,"bosseri",,"","Letouzey",Accepted,,M,WCSP (in review),959400,582577-1,"Adansonia","n.s., 17: 120","","1977"
+kew-2832044,A,Montiniaceae,,Grevea,,"eggelingii",,"","Milne-Redh.",Accepted,,M,WCSP (in review),959401,582578-1,"Hooker's Icon. Pl.","36: t. 3541, 7","","1956"
+kew-2832045,A,Montiniaceae,,Grevea,,"eggelingii",var.,"echinocarpa","Mendes",Accepted,,L,WCSP (in review),959402,,"Bol. Soc. Brot.","II, 44: 299","","1970"
+kew-2832047,A,Montiniaceae,,Grevea,,"eggelingii",var.,"keniensis","(Verdc.) Verdc.",Accepted,,L,WCSP (in review),959404,992390-1,"Kew Bull.","51: 772","","1996"
+kew-2832048,A,Montiniaceae,,Grevea,,"madagascariensis",,"","Baill.",Accepted,,M,WCSP (in review),959405,791203-1,"Bull. Mens. Soc. Linn. Paris","1: 420","","1884"
+kew-2501303,A,Montiniaceae,,Montinia,,"caryophyllacea",,"","Thunb.",Accepted,,M,WCSP (in review),637790,613483-1,"Physiogr. Sälsk. Handl.","1: 109","","1776"
+kew-2501646,A,Montiniaceae,,Montinia,,"fruticosa",,"","Gaertn.",Unresolved,,L,WCSP (in review),638132,613485-1,"Fruct. Sem. Pl.","1: 170","","1788"

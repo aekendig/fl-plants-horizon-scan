@@ -1,0 +1,305 @@
+species,name,rank,id
+Chlamydophila abortus.1,Bacteria,kingdom,3
+Chlamydophila abortus.2,Chlamydiae,phylum,82
+Chlamydophila abortus.3,Chlamydiae,class,297
+Chlamydophila abortus.4,Chlamydiales,order,570
+Chlamydophila abortus.5,Chlamydiaceae,family,8102
+Chlamydophila abortus.6,Chlamydophila,genus,9813775
+Chlamydophila abortus.7,Chlamydophila abortus,species,3228249
+Chlamydophila psittaci.1,Bacteria,kingdom,3
+Chlamydophila psittaci.2,Chlamydiae,phylum,82
+Chlamydophila psittaci.3,Chlamydiae,class,297
+Chlamydophila psittaci.4,Chlamydiales,order,570
+Chlamydophila psittaci.5,Chlamydiaceae,family,8102
+Chlamydophila psittaci.6,Chlamydophila,genus,9813775
+Chlamydophila psittaci.7,Chlamydophila psittaci,species,3228247
+Dothiorella viticola.1,Fungi,kingdom,5
+Dothiorella viticola.2,Ascomycota,phylum,95
+Dothiorella viticola.3,Dothideomycetes,class,183
+Dothiorella viticola.4,Botryosphaeriales,order,1032
+Dothiorella viticola.5,Botryosphaeriaceae,family,4791
+Dothiorella viticola.6,Dothiorella,genus,2568060
+Dothiorella viticola.7,Dothiorella viticola,species,2615814
+Nattrassia mangiferae.1,Fungi,kingdom,5
+Nattrassia mangiferae.2,Ascomycota,phylum,95
+Nattrassia mangiferae.3,Dothideomycetes,class,183
+Nattrassia mangiferae.4,Botryosphaeriales,order,1032
+Nattrassia mangiferae.5,Botryosphaeriaceae,family,4791
+Nattrassia mangiferae.6,Neofusicoccum,genus,2611886
+Nattrassia mangiferae.7,Neofusicoccum mangiferae,species,2611784
+Neonectria coccinea.1,Fungi,kingdom,5
+Neonectria coccinea.2,Ascomycota,phylum,95
+Neonectria coccinea.3,Sordariomycetes,class,320
+Neonectria coccinea.4,Hypocreales,order,1290
+Neonectria coccinea.5,Nectriaceae,family,4152
+Neonectria coccinea.6,Neonectria,genus,2563867
+Neonectria coccinea.7,Neonectria coccinea,species,2563781
+Pezizella oenotherae.1,Fungi,kingdom,5
+Pezizella oenotherae.2,Ascomycota,phylum,95
+Pezizella oenotherae.3,Leotiomycetes,class,179
+Pezizella oenotherae.4,Helotiales,order,1052
+Pezizella oenotherae.5,Chaetomellaceae,family,7469559
+Pezizella oenotherae.6,Discohainesia,genus,2577748
+Pezizella oenotherae.7,Discohainesia oenotherae,species,2577749
+Groundnut bud necrosis virus,NA,NA,NA
+Sesamia inferens.1,Animalia,kingdom,1
+Sesamia inferens.2,Arthropoda,phylum,54
+Sesamia inferens.3,Insecta,class,216
+Sesamia inferens.4,Lepidoptera,order,797
+Sesamia inferens.5,Noctuidae,family,7015
+Sesamia inferens.6,Sesamia,genus,1762346
+Sesamia inferens.7,Sesamia inferens,species,1762353
+Atelocauda digitata.1,Fungi,kingdom,5
+Atelocauda digitata.2,Basidiomycota,phylum,34
+Atelocauda digitata.3,Pucciniomycetes,class,270
+Atelocauda digitata.4,Pucciniales,order,1126
+Atelocauda digitata.5,Raveneliaceae,family,3249
+Atelocauda digitata.6,Endoraecium,genus,2517053
+Atelocauda digitata.7,Endoraecium digitatum,species,2517077
+Chaetomella raphigera.1,Fungi,kingdom,5
+Chaetomella raphigera.2,Ascomycota,phylum,95
+Chaetomella raphigera.3,Leotiomycetes,class,179
+Chaetomella raphigera.4,Helotiales,order,1052
+Chaetomella raphigera.5,Chaetomellaceae,family,7469559
+Chaetomella raphigera.6,Chaetomella,genus,9533963
+Chaetomella raphigera.7,Chaetomella raphigera,species,2577798
+Sclerotium hydrophilum.1,Fungi,kingdom,5
+Sclerotium hydrophilum.2,Basidiomycota,phylum,34
+Sclerotium hydrophilum.3,Agaricomycetes,class,186
+Sclerotium hydrophilum.4,Cantharellales,order,1300
+Sclerotium hydrophilum.5,Ceratobasidiaceae,family,8458
+Sclerotium hydrophilum.6,Ceratorhiza,genus,2555108
+Sclerotium hydrophilum.7,Ceratorhiza hydrophila,species,7559942
+Dialeuropora decempuncta.1,Animalia,kingdom,1
+Dialeuropora decempuncta.2,Arthropoda,phylum,54
+Dialeuropora decempuncta.3,Insecta,class,216
+Dialeuropora decempuncta.4,Hemiptera,order,809
+Dialeuropora decempuncta.5,Aleyrodidae,family,4304
+Dialeuropora decempuncta.6,Dialeuropora,genus,4771722
+Dialeuropora decempuncta.7,Dialeuropora decempuncta,species,4771723
+Phacidiopycnis padwickii.1,Fungi,kingdom,5
+Phacidiopycnis padwickii.2,Ascomycota,phylum,95
+Phacidiopycnis padwickii.3,Leotiomycetes,class,179
+Phacidiopycnis padwickii.4,Leotiales,order,1053
+Phacidiopycnis padwickii.5,Bulgariaceae,family,8387
+Phacidiopycnis padwickii.6,Phacidiopycnis,genus,2566713
+Phacidiopycnis padwickii.7,Phacidiopycnis padwickii,species,2577635
+Sarcinella nauradehiicola.1,Fungi,kingdom,5
+Sarcinella nauradehiicola.2,Ascomycota,phylum,95
+Sarcinella nauradehiicola.3,Dothideomycetes,class,183
+Sarcinella nauradehiicola.4,Englerulaceae,family,2478
+Sarcinella nauradehiicola.5,Sarcinella,genus,2626751
+Sarcinella nauradehiicola.6,Sarcinella nauradehiicola,species,7612391
+Hyalopeplus smaragdinus.1,Animalia,kingdom,1
+Hyalopeplus smaragdinus.2,Arthropoda,phylum,54
+Hyalopeplus smaragdinus.3,Insecta,class,216
+Hyalopeplus smaragdinus.4,Hemiptera,order,809
+Hyalopeplus smaragdinus.5,Miridae,family,4319
+Hyalopeplus smaragdinus.6,Hyalopeplus,genus,2008944
+Hyalopeplus smaragdinus.7,Hyalopeplus smaragdinus,species,4776275
+Phloeospora aceris.1,Fungi,kingdom,5
+Phloeospora aceris.2,Ascomycota,phylum,95
+Phloeospora aceris.3,Dothideomycetes,class,183
+Phloeospora aceris.4,Mycosphaerellales,order,9783671
+Phloeospora aceris.5,Mycosphaerellaceae,family,4797
+Phloeospora aceris.6,Phloeospora,genus,2570111
+Phloeospora aceris.7,Phloeospora aceris,species,5263460
+Sclerotium fumigatum.1,Fungi,kingdom,5
+Sclerotium fumigatum.2,Basidiomycota,phylum,34
+Sclerotium fumigatum.3,Agaricomycetes,class,186
+Sclerotium fumigatum.4,Agaricales,order,1499
+Sclerotium fumigatum.5,Typhulaceae,family,7007
+Sclerotium fumigatum.6,Sclerotium,genus,2513145
+Sclerotium fumigatum.7,Sclerotium fumigatum,species,8686669
+Prioniturus.1,Animalia,kingdom,1
+Prioniturus.2,Chordata,phylum,44
+Prioniturus.3,Aves,class,212
+Prioniturus.4,Psittaciformes,order,1445
+Prioniturus.5,Psittacidae,family,9340
+Prioniturus.6,Prioniturus,genus,2480031
+yellow head virus,NA,NA,NA
+Asterinella stuhlmanni.1,Fungi,kingdom,5
+Asterinella stuhlmanni.2,Ascomycota,phylum,95
+Asterinella stuhlmanni.3,Dothideomycetes,class,183
+Asterinella stuhlmanni.4,Microthyriales,order,1036
+Asterinella stuhlmanni.5,Microthyriaceae,family,4808
+Asterinella stuhlmanni.6,Asterinella,genus,8160950
+Asterinella stuhlmanni.7,Asterinella stuhlmannii,species,2613364
+Cucumis dipsaceus.1,Plantae,kingdom,6
+Cucumis dipsaceus.2,Tracheophyta,phylum,7707728
+Cucumis dipsaceus.3,Magnoliopsida,class,220
+Cucumis dipsaceus.4,Cucurbitales,order,7224005
+Cucumis dipsaceus.5,Cucurbitaceae,family,6634
+Cucumis dipsaceus.6,Cucumis,genus,2874568
+Cucumis dipsaceus.7,Cucumis dipsaceus,species,2874574
+Hemitarsonemus tepidariorum.1,Animalia,kingdom,1
+Hemitarsonemus tepidariorum.2,Arthropoda,phylum,54
+Hemitarsonemus tepidariorum.3,Arachnida,class,367
+Hemitarsonemus tepidariorum.4,Prostigmata,order,372
+Hemitarsonemus tepidariorum.5,Tarsonemidae,family,6059
+Hemitarsonemus tepidariorum.6,Hemitarsonemus,genus,4543001
+Hemitarsonemus tepidariorum.7,Hemitarsonemus tepidariorum,species,4543002
+Longula malaca.1,Animalia,kingdom,1
+Longula malaca.2,Arthropoda,phylum,54
+Longula malaca.3,Insecta,class,216
+Longula malaca.4,Lepidoptera,order,797
+Longula malaca.5,Geometridae,family,6950
+Longula malaca.6,Scopula,genus,1970574
+Pelitiopsis.1,Fungi,kingdom,5
+Pelitiopsis.2,Ascomycota,phylum,95
+Pelitiopsis.3,Dothideomycetes,class,183
+Pelitiopsis.4,Muyocopronales,order,9713525
+Pelitiopsis.5,Muyocopronaceae,family,3295884
+Pelitiopsis.6,Peltopsis,genus,8379321
+Rhagadologium cubensis.1,Fungi,kingdom,5
+Rhagadologium cubensis.2,Ascomycota,phylum,95
+Rhagadologium cubensis.3,Dothideomycetes,class,183
+Rhagadologium cubensis.4,Asterinales,order,7840248
+Rhagadologium cubensis.5,Parmulariaceae,family,2473
+Rhagadologium cubensis.6,Rhagadolobium,genus,2572239
+Rhagadologium cubensis.7,Rhagadolobium cubensis,species,3544625
+Sclerotium coffeicola.1,Fungi,kingdom,5
+Sclerotium coffeicola.2,Basidiomycota,phylum,34
+Sclerotium coffeicola.3,Agaricomycetes,class,186
+Sclerotium coffeicola.4,Agaricales,order,1499
+Sclerotium coffeicola.5,Typhulaceae,family,7007
+Sclerotium coffeicola.6,Sclerotium,genus,2513145
+Sclerotium coffeicola.7,Sclerotium coffeicola,species,2539157
+Vasculomyces xanthosomae.1,Fungi,kingdom,5
+Vasculomyces xanthosomae.2,Ascomycota,phylum,95
+Vasculomyces xanthosomae.3,Vasculomyces,genus,2587678
+Vasculomyces xanthosomae.4,Vasculomyces xanthosomae,species,2587679
+Salmonella enterica.1,Bacteria,kingdom,3
+Salmonella enterica.2,Proteobacteria,phylum,111
+Salmonella enterica.3,Gammaproteobacteria,class,362
+Salmonella enterica.4,Enterobacteriales,order,1395
+Salmonella enterica.5,Enterobacteriaceae,family,4899
+Salmonella enterica.6,Salmonella,genus,3221815
+Salmonella enterica.7,Salmonella enterica,species,9701185
+Phloeospora robiniae.1,Fungi,kingdom,5
+Phloeospora robiniae.2,Ascomycota,phylum,95
+Phloeospora robiniae.3,Dothideomycetes,class,183
+Phloeospora robiniae.4,Mycosphaerellales,order,9783671
+Phloeospora robiniae.5,Mycosphaerellaceae,family,4797
+Phloeospora robiniae.6,Phloeospora,genus,2570111
+Phloeospora robiniae.7,Phloeospora robiniae,species,5263447
+Coniocybe pallida.1,Fungi,kingdom,5
+Coniocybe pallida.2,Ascomycota,phylum,95
+Coniocybe pallida.3,Lecanoromycetes,class,180
+Coniocybe pallida.4,Lecanorales,order,1048
+Coniocybe pallida.5,Coniocybaceae,family,6243
+Coniocybe pallida.6,Sclerophora,genus,2610321
+Coniocybe pallida.7,Sclerophora nivea,species,2610329
+Itersonilia perplexans.1,Fungi,kingdom,5
+Itersonilia perplexans.2,Basidiomycota,phylum,34
+Itersonilia perplexans.3,Tremellomycetes,class,149
+Itersonilia perplexans.4,Cystofilobasidiales,order,1125
+Itersonilia perplexans.5,Cystofilobasidiaceae,family,7582
+Itersonilia perplexans.6,Itersonilia,genus,2518115
+Itersonilia perplexans.7,Itersonilia perplexans,species,2518117
+Olive latent virus 2.1,Viruses,kingdom,8
+Olive latent virus 2.2,Bromoviridae,family,6226
+Olive latent virus 2.3,Oleavirus,genus,10079957
+Olive latent virus 2.4,Olive latent virus 2,species,10604192
+Otala lactea.1,Animalia,kingdom,1
+Otala lactea.2,Mollusca,phylum,52
+Otala lactea.3,Gastropoda,class,225
+Otala lactea.4,Stylommatophora,order,1456
+Otala lactea.5,Helicidae,family,6540
+Otala lactea.6,Otala,genus,2294283
+Otala lactea.7,Otala lactea,species,2294284
+Phacidiopycnis washingtonensis.1,Fungi,kingdom,5
+Phacidiopycnis washingtonensis.2,Ascomycota,phylum,95
+Phacidiopycnis washingtonensis.3,Leotiomycetes,class,179
+Phacidiopycnis washingtonensis.4,Leotiales,order,1053
+Phacidiopycnis washingtonensis.5,Bulgariaceae,family,8387
+Phacidiopycnis washingtonensis.6,Phacidiopycnis,genus,2566713
+Phacidiopycnis washingtonensis.7,Phacidiopycnis washingtonensis,species,3481183
+Phoma multirostrata.1,Fungi,kingdom,5
+Phoma multirostrata.2,Ascomycota,phylum,95
+Phoma multirostrata.3,Dothideomycetes,class,183
+Phoma multirostrata.4,Pleosporales,order,1047
+Phoma multirostrata.5,Didymellaceae,family,3281822
+Phoma multirostrata.6,Phoma,genus,2513988
+Phoma multirostrata.7,Phoma multirostrata,species,5262136
+Pycnostysanus azaleae.1,Fungi,kingdom,5
+Pycnostysanus azaleae.2,Ascomycota,phylum,95
+Pycnostysanus azaleae.3,Dothideomycetes,class,183
+Pycnostysanus azaleae.4,Pleosporales,order,1047
+Pycnostysanus azaleae.5,Melanommataceae,family,8309
+Pycnostysanus azaleae.6,Seifertia,genus,2598600
+Pycnostysanus azaleae.7,Seifertia azaleae,species,2598552
+Bufo blombergi.1,Animalia,kingdom,1
+Bufo blombergi.2,Chordata,phylum,44
+Bufo blombergi.3,Amphibia,class,131
+Bufo blombergi.4,Anura,order,952
+Bufo blombergi.5,Bufonidae,family,6727
+Bufo blombergi.6,Rhaebo,genus,2423143
+Bufo blombergi.7,Rhaebo blombergi,species,2423153
+Byssochlamys lagunculariae.1,Fungi,kingdom,5
+Byssochlamys lagunculariae.2,Ascomycota,phylum,95
+Byssochlamys lagunculariae.3,Eurotiomycetes,class,178
+Byssochlamys lagunculariae.4,Eurotiales,order,1040
+Byssochlamys lagunculariae.5,Trichocomaceae,family,8324
+Byssochlamys lagunculariae.6,Byssochlamys,genus,2598330
+Byssochlamys lagunculariae.7,Byssochlamys lagunculariae,species,3466779
+Nassella poeppigiana.1,Plantae,kingdom,6
+Nassella poeppigiana.2,Tracheophyta,phylum,7707728
+Nassella poeppigiana.3,Liliopsida,class,196
+Nassella poeppigiana.4,Poales,order,1369
+Nassella poeppigiana.5,Poaceae,family,3073
+Nassella poeppigiana.6,Nassella,genus,2703595
+Nassella poeppigiana.7,Nassella poeppigiana,species,5679401
+Pontederia rotundifolia.1,Plantae,kingdom,6
+Pontederia rotundifolia.2,Tracheophyta,phylum,7707728
+Pontederia rotundifolia.3,Liliopsida,class,196
+Pontederia rotundifolia.4,Commelinales,order,553
+Pontederia rotundifolia.5,Pontederiaceae,family,3731
+Pontederia rotundifolia.6,Pontederia,genus,2740415
+Pontederia rotundifolia.7,Pontederia rotundifolia,species,2766055
+Dothiorella americana.1,Fungi,kingdom,5
+Dothiorella americana.2,Ascomycota,phylum,95
+Dothiorella americana.3,Dothideomycetes,class,183
+Dothiorella americana.4,Botryosphaeriales,order,1032
+Dothiorella americana.5,Botryosphaeriaceae,family,4791
+Dothiorella americana.6,Dothiorella,genus,2568060
+Dothiorella americana.7,Dothiorella americana,species,8208237
+High plains wheat mosaic emaravirus.1,Viruses,kingdom,8
+High plains wheat mosaic emaravirus.2,Fimoviridae,family,9738897
+High plains wheat mosaic emaravirus.3,Emaravirus,genus,9999706
+High plains wheat mosaic emaravirus.4,High Plains wheat mosaic emaravirus,species,9849227
+Phacidiopycnis tuberivora.1,Fungi,kingdom,5
+Phacidiopycnis tuberivora.2,Ascomycota,phylum,95
+Phacidiopycnis tuberivora.3,Leotiomycetes,class,179
+Phacidiopycnis tuberivora.4,Leotiales,order,1053
+Phacidiopycnis tuberivora.5,Bulgariaceae,family,8387
+Phacidiopycnis tuberivora.6,Phacidiopycnis,genus,2566713
+Phacidiopycnis tuberivora.7,Phacidiopycnis tuberivora,species,2577633
+Chlamydophila pneumoniae.1,Bacteria,kingdom,3
+Chlamydophila pneumoniae.2,Chlamydiae,phylum,82
+Chlamydophila pneumoniae.3,Chlamydiae,class,297
+Chlamydophila pneumoniae.4,Chlamydiales,order,570
+Chlamydophila pneumoniae.5,Chlamydiaceae,family,8102
+Chlamydophila pneumoniae.6,Chlamydophila,genus,9813775
+Chlamydophila pneumoniae.7,Chlamydophila pneumoniae,species,3228245
+Harknessia eucrypta.1,Fungi,kingdom,5
+Harknessia eucrypta.2,Ascomycota,phylum,95
+Harknessia eucrypta.3,Sordariomycetes,class,320
+Harknessia eucrypta.4,Diaporthales,order,1289
+Harknessia eucrypta.5,Harknessiaceae,family,7497929
+Harknessia eucrypta.6,Harknessia,genus,2567470
+Harknessia eucrypta.7,Harknessia eucrypta,species,2567472
+Omalonyx felina.1,Animalia,kingdom,1
+Omalonyx felina.2,Mollusca,phylum,52
+Omalonyx felina.3,Gastropoda,class,225
+Omalonyx felina.4,Stylommatophora,order,1456
+Omalonyx felina.5,Succineidae,family,6531
+Omalonyx felina.6,Omalonyx,genus,4597882
+Omalonyx felina.7,Omalonyx unguis,species,10377858
+Sedum gracile.1,Plantae,kingdom,6
+Sedum gracile.2,Tracheophyta,phylum,7707728
+Sedum gracile.3,Magnoliopsida,class,220
+Sedum gracile.4,Saxifragales,order,7219248
+Sedum gracile.5,Crassulaceae,family,2406
+Sedum gracile.6,Sedum,genus,5361975
+Sedum gracile.7,Sedum gracile,species,7936774

@@ -1,0 +1,101 @@
+Likely.pathway.of.arrival,pathway_release,pathway_escape,pathway_contaminant,pathway_stowaway,pathway_corridor,pathway_unaided
+"escape from confinement, unaided (not sure if dispersal by birds is enough to justify unaided)",0,1,0,0,0,1
+1. transport-stowaway  2. transport-contaminant  3. escape from confinement  4. unaided  5. release in nature (historically),1,1,1,1,0,1
+escape from confinement,0,1,0,0,0,0
+1. escape from confinement 2. release in nature  3. transport- contaminant,1,1,1,0,0,0
+seed contaminant; escape,0,1,1,0,0,0
+1. transport- contaminant  2. transport-stowaway  3. unaided,0,0,1,1,0,1
+"escape from confinement, transport contaminant",0,1,1,0,0,0
+1. escape from confinement  2. transport- stowaway  3. unaided,0,1,0,1,0,1
+1. escape from confinement  2. unaided; corridor,0,1,0,0,1,1
+escape from confinement,0,1,0,0,0,0
+"transport contaminant, transport stowaway, corridor, unaided",0,0,1,1,1,1
+1. transport-contaminant  2. transport-stowaway  3. unaided,0,0,1,1,0,1
+"transport contaminant, transport-stowaway, corridor, unaided, escape from confinement",0,1,1,1,1,1
+escape from confinement,0,1,0,0,0,0
+escape; transport-stowaway,0,1,0,1,0,0
+1. transport-contaminant  2. transport-stowaway (limited)  3. escape from confinement (limited)  4. unaided (limited),0,1,1,1,0,1
+escape from confinement,0,1,0,0,0,0
+"escape from confinement, transport contaminant",0,1,1,0,0,0
+escape from confinement; transport stowaway; unaided,0,1,0,1,0,1
+"escape from confinement, transport contaminant, corridor",0,1,1,0,1,0
+escape from confinement; unaided,0,1,0,0,0,1
+escape,0,1,0,0,0,0
+escape from confinement; transport stowaway; unaided; release,1,1,0,1,0,1
+escape from confinement,0,1,0,0,0,0
+transport-stowaway; transport contaminant,0,0,1,1,0,0
+1. escape from confinement (limited),0,1,0,0,0,0
+"transport contaminant, escape from confinement",0,1,1,0,0,0
+transport-stowaway,0,0,0,1,0,0
+escape from confinement,0,1,0,0,0,0
+escape from confinement,0,1,0,0,0,0
+"corridor, unaided",0,0,0,0,1,1
+1. escape from confinement  2. release in nature  3. unaided,1,1,0,0,0,1
+escape from confinement,0,1,0,0,0,0
+1. transport- stowaway   2. unaided 3. escape from confinement (becoming less common)  4. release in nature (possible original introduction as forage),1,1,0,1,0,1
+"escape from confinement, transport contaminant",0,1,1,0,0,0
+escape from confinement,0,1,0,0,0,0
+"escape from confinement, transport contaminant, transport stowaway.",0,1,1,1,0,0
+"release, escape, contaminant, stowaway, corridor, unaided",1,1,1,1,1,1
+escape,0,1,0,0,0,0
+1. transport-contaminant  2. transport-stowaway  3. unaided,0,0,1,1,0,1
+escape from confinement,0,1,0,0,0,0
+escape from confinement,0,1,0,0,0,0
+"escape from confinement, transport contaminant, corridor, unaided.",0,1,1,0,1,1
+"escape from confinement, transport contaminant, unaided",0,1,1,0,0,1
+"transport-stowaway; escape from confinement; transport contaminant, corridor, unaided",0,1,1,1,1,1
+"corridor, transport contaminant",0,0,1,0,1,0
+escape from confinement,0,1,0,0,0,0
+1. transport- stowaway  2. transport- contaminant 3. unaided,0,0,1,1,0,1
+escape,0,1,0,0,0,0
+1. transport- stowaway  2. transport- contaminant  3. unaided,0,0,1,1,0,1
+escape,0,1,0,0,0,0
+"escape from confinement, transport contaminant, transport stowawayh13:m13",0,1,1,1,0,0
+transport-stowaway,0,0,0,1,0,0
+escape from confinement,0,1,0,0,0,0
+seed contaminant or escape from confinement,0,1,1,0,0,0
+escape from confinement,0,1,0,0,0,0
+1. escape from confinement  2. transport- contaminant,0,1,1,0,0,0
+"escape from confinement, transport contaminant, unaided.",0,1,1,0,0,1
+escape from confinement; unaided,0,1,0,0,0,1
+transport stowaway,0,0,0,1,0,0
+1. transport- contaminant  2. unaided,0,0,1,0,0,1
+unaided or escape from confinement,0,1,0,0,0,1
+transport stowaway --dry ballast and escape from confinement--agricultural weed,0,1,0,1,0,0
+transport-stowaway,0,0,0,1,0,0
+transport contaminant (misidentification?),0,0,1,0,0,0
+escape from confinement,0,1,0,0,0,0
+"escape from confinement; transport contaminant, transport stowaway, corridor, unaided",0,1,1,1,1,1
+"escape, unaided, corridor",0,1,0,0,1,1
+escape from confinement,0,1,0,0,0,0
+escape from confinement; unaided,0,1,0,0,0,1
+"transport-stowaway, escape from confinement",0,1,0,1,0,0
+1. transport- contaminant  2. unaided,0,0,1,0,0,1
+transport contaminant,0,0,1,0,0,0
+escape from confinement,0,1,0,0,0,0
+transport contaminant,0,0,1,0,0,0
+"transport contaminant, intentional comodity, escape from confinement,",0,1,1,0,0,0
+escape from confinement,0,1,0,0,0,0
+1. escape from confinement,0,1,0,0,0,0
+"escape from confinement, transport contaminant, transport stowaway, corridor, unaided",0,1,1,1,1,1
+transport-stowaway,0,0,0,1,0,0
+transport-stowaway; unaided,0,0,0,1,0,1
+1. escape from confinement  2. transport- stowaway (small proportion)  3. unaided (small proportion),0,1,0,1,0,1
+transport stowaway,0,0,0,1,0,0
+transport-stowaway,0,0,0,1,0,0
+"release, escape, contaminant, stowaway, corridor, unaided
+1. transport- contaminant  2. unaided",1,1,1,1,1,1
+escape from confinement,0,1,0,0,0,0
+"escape from confinement, transport contaminant, transport stowaway",0,1,1,1,0,0
+transport contaminant,0,0,1,0,0,0
+"escape from confinement, transport contaminant, transport stowaway, corridor, and unaided",0,1,1,1,1,1
+escape from confinement,0,1,0,0,0,0
+escape from confinement,0,1,0,0,0,0
+escape from confinement,0,1,0,0,0,0
+escape from confinement,0,1,0,0,0,0
+escape from confinement,0,1,0,0,0,0
+"escape from confinement, transport contaminant",0,1,1,0,0,0
+escape from confinement,0,1,0,0,0,0
+escape from confinement,0,1,0,0,0,0
+escape from confinement.,0,1,0,0,0,0
+transport contaminant (wool),0,0,1,0,0,0

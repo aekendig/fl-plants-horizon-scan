@@ -1,0 +1,12 @@
+﻿ID,Major group,Family,Genus hybrid marker,Genus,Species hybrid marker,Species,Infraspecific rank,Infraspecific epithet,Authorship,Taxonomic status in TPL,Nomenclatural status from original data source,Confidence level,Source,Source id,IPNI id,Publication,Collation,Page,Date
+tro-20200009,A,Peridiscaceae,,Medusandra,,"mpomiana",,"","Letouzey & Satabie",Accepted,,M,TRO,20200009,565407-1,"Adansonia, n.s.","14(1): 65","65","1974"
+tro-20200008,A,Peridiscaceae,,Medusandra,,"richardsiana",,"","Brenan",Accepted,,M,TRO,20200008,,"Kew Bull.","7: 229, f. 1 & 2","229","1952"
+kew-2562598,A,Peridiscaceae,,Peridiscus,,"lucidus",,"","Benth.",Accepted,,M,WCSP (in review),697471,111986-1,"Gen. Pl.","1: 127","","1862"
+tro-20200005,A,Peridiscaceae,,Soyauxia,,"floribunda",,"","Hutch.",Accepted,,M,TRO,20200005,365976-1,"Kew Bull.","44","44","1915"
+tro-20200002,A,Peridiscaceae,,Soyauxia,,"gabonensis",,"","Oliv.",Accepted,,M,TRO,20200002,675630-1,"Hooker's Icon. Pl.","t. 1393","","1882"
+kew-2601265,A,Peridiscaceae,,Soyauxia,,"glabrescens",,"","Engl.",Unresolved,,L,WCSP (in review),734537,675631-1,"Bot. Jahrb. Syst.","14: 390","","1891"
+tro-20200004,A,Peridiscaceae,,Soyauxia,,"grandifolia",,"","Gilg & Stapf",Accepted,,M,TRO,20200004,675632-1,"J. Linn. Soc., Bot.","37: 102","102","1905"
+kew-2601171,A,Peridiscaceae,,Soyauxia,,"ledermannii",,"","Sleumer",Unresolved,,L,WCSP (in review),734443,365977-1,"Repert. Spec. Nov. Regni Veg.","45: 13","","1938"
+tro-20200007,A,Peridiscaceae,,Soyauxia,,"talbotii",,"","Baker f.",Accepted,,M,TRO,20200007,365978-1,"J. Bot.","52: 4","4","1914"
+tro-20200006,A,Peridiscaceae,,Soyauxia,,"velutina",,"","Hutch. & Dalziel",Accepted,,M,TRO,20200006,365979-1,"Fl. W. Trop. Afr.","1: 170","170","1927"
+tro-13201254,A,Peridiscaceae,,Whittonia,,"guianensis",,"","Sandwith",Accepted,,M,TRO,13201254,268504-2,"Kew Bull.","15(3): 468–471, f. 1–8","468","1962"

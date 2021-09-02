@@ -1,0 +1,100 @@
+Taxon,Genus,Hybrid.marker,Species,Abbrev,Infraspecific.rank,Infraspecific,Authority,ID,Plant.Name.Index,TPL.version,Taxonomic.status,Family,New.Genus,New.Hybrid.marker,New.Species,New.Infraspecific.rank,New.Infraspecific,New.Authority,New.ID,New.Taxonomic.status,Typo,WFormat,Higher.level,Date
+Ligustrum vulgare,Ligustrum,,vulgare,NA,NA,,,kew-353907,TRUE,1.1,Accepted,Oleaceae,Ligustrum,,vulgare,,,L.,kew-353907,Accepted,FALSE,FALSE,FALSE,8/3/21
+Cytisus scoparius,Cytisus,,scoparius,NA,NA,,,ild-8778,TRUE,1.1,Accepted,Leguminosae,Cytisus,,scoparius,,,(L.) Link,ild-8778,Accepted,FALSE,FALSE,FALSE,8/3/21
+Phalaris arundinacea,Phalaris,,arundinacea,NA,NA,,,kew-433393,TRUE,1.1,Accepted,Poaceae,Phalaris,,arundinacea,,,L.,kew-433393,Accepted,FALSE,FALSE,FALSE,8/3/21
+Agrostis capillaris,Agrostis,,capillaris,NA,NA,,,kew-387729,TRUE,1.1,Accepted,Poaceae,Agrostis,,capillaris,,,L.,kew-387729,Accepted,FALSE,FALSE,FALSE,8/3/21
+Avena fatua,Avena,,fatua,NA,NA,,,kew-397488,TRUE,1.1,Accepted,Poaceae,Avena,,fatua,,,L.,kew-397488,Accepted,FALSE,FALSE,FALSE,8/3/21
+Persicaria hydropiper,Persicaria,,hydropiper,NA,NA,,,kew-2572559,TRUE,1.1,Accepted,Polygonaceae,Persicaria,,hydropiper,,,(L.) Delarbre,kew-2572559,Accepted,FALSE,FALSE,FALSE,8/3/21
+Hypericum perforatum,Hypericum,,perforatum,NA,NA,,,kew-2858676,TRUE,1.1,Accepted,Hypericaceae,Hypericum,,perforatum,,,L.,kew-2858676,Accepted,FALSE,FALSE,FALSE,8/3/21
+Malva sylvestris,Malva,,sylvestris,NA,NA,,,kew-2504118,TRUE,1.1,Accepted,Malvaceae,Malva,,sylvestris,,,L.,kew-2504118,Accepted,FALSE,FALSE,FALSE,8/3/21
+Mentha aquatica,Mentha,,aquatica,NA,NA,,,kew-124366,TRUE,1.1,Accepted,Lamiaceae,Mentha,,aquatica,,,L.,kew-124366,Accepted,FALSE,FALSE,FALSE,8/3/21
+Matricaria chamomilla,Matricaria,,chamomilla,NA,NA,,,gcc-103038,TRUE,1.1,Accepted,Compositae,Matricaria,,chamomilla,,,L.,gcc-103038,Accepted,FALSE,FALSE,FALSE,8/3/21
+Cirsium arvense,Cirsium,,arvense,NA,NA,,,gcc-106632,TRUE,1.1,Accepted,Compositae,Cirsium,,arvense,,,(L.) Scop.,gcc-106632,Accepted,FALSE,FALSE,FALSE,8/3/21
+Tripleurospermum inodorum,Tripleurospermum,,inodorum,NA,NA,,,gcc-113650,TRUE,1.1,Accepted,Compositae,Tripleurospermum,,inodorum,,,(L.) Sch.Bip.,gcc-113650,Accepted,FALSE,FALSE,FALSE,8/3/21
+Plantago coronopus,Plantago,,coronopus,NA,NA,,,kew-2571444,TRUE,1.1,Accepted,Plantaginaceae,Plantago,,coronopus,,,L.,kew-2571444,Accepted,FALSE,FALSE,FALSE,8/3/21
+Symphytum officinale,Symphytum,,officinale,NA,NA,,,kew-2475636,TRUE,1.1,Accepted,Boraginaceae,Symphytum,,officinale,,,L.,kew-2475636,Accepted,FALSE,FALSE,FALSE,8/3/21
+Anthoxanthum odoratum,Anthoxanthum,,odoratum,NA,NA,,,kew-394021,TRUE,1.1,Accepted,Poaceae,Anthoxanthum,,odoratum,,,L.,kew-394021,Accepted,FALSE,FALSE,FALSE,8/3/21
+Alopecurus myosuroides,Alopecurus,,myosuroides,NA,NA,,,kew-391472,TRUE,1.1,Accepted,Poaceae,Alopecurus,,myosuroides,,,Huds.,kew-391472,Accepted,FALSE,FALSE,FALSE,8/3/21
+Clematis vitalba,Clematis,,vitalba,NA,NA,,,kew-2726964,TRUE,1.1,Accepted,Ranunculaceae,Clematis,,vitalba,,,L.,kew-2726964,Accepted,FALSE,FALSE,FALSE,8/3/21
+Myosotis scorpioides,Myosotis,,scorpioides,NA,NA,,,kew-2358330,TRUE,1.1,Accepted,Boraginaceae,Myosotis,,scorpioides,,,L.,kew-2358330,Accepted,FALSE,FALSE,FALSE,8/3/21
+Crataegus monogyna,Crataegus,,monogyna,NA,NA,,,rjp-49,TRUE,1.1,Accepted,Rosaceae,Crataegus,,monogyna,,,Jacq.,rjp-49,Accepted,FALSE,FALSE,FALSE,8/3/21
+Tanacetum vulgare,Tanacetum,,vulgare,NA,NA,,,gcc-76001,TRUE,1.1,Accepted,Compositae,Tanacetum,,vulgare,,,L.,gcc-76001,Accepted,FALSE,FALSE,FALSE,8/3/21
+Pinus pinaster,Pinus,,pinaster,NA,NA,,,kew-2562572,TRUE,1.1,Accepted,Pinaceae,Pinus,,pinaster,,,Aiton,kew-2562572,Accepted,FALSE,FALSE,FALSE,8/3/21
+Ulex europaeus,Ulex,,europaeus,NA,NA,,,ild-8476,TRUE,1.1,Accepted,Leguminosae,Ulex,,europaeus,,,L.,ild-8476,Accepted,FALSE,FALSE,FALSE,8/3/21
+Miconia calvescens,Miconia,,calvescens,NA,NA,,,tro-20300144,TRUE,1.1,Accepted,Melastomataceae,Miconia,,calvescens,,,DC.,tro-20300144,Accepted,FALSE,FALSE,FALSE,8/3/21
+Geranium robertianum,Geranium,,robertianum,NA,NA,,,kew-2823970,TRUE,1.1,Accepted,Geraniaceae,Geranium,,robertianum,,,L.,kew-2823970,Accepted,FALSE,FALSE,FALSE,8/3/21
+Jacobaea vulgaris,Jacobaea,,vulgaris,NA,NA,,,gcc-130819,TRUE,1.1,Accepted,Compositae,Jacobaea,,vulgaris,,,Gaertn.,gcc-130819,Accepted,FALSE,FALSE,FALSE,8/3/21
+Calystegia sepium spp. sepium,Calystegia,,sepium,NA,NA,spp.,sepium,tro-8500113,FALSE,1.1,Accepted,Convolvulaceae,Calystegia,,sepium,,,(L.) R. Br.,tro-8500113,Accepted,FALSE,FALSE,TRUE,8/3/21
+Sonchus arvensis,Sonchus,,arvensis,NA,NA,,,gcc-48853,TRUE,1.1,Accepted,Compositae,Sonchus,,arvensis,,,L.,gcc-48853,Accepted,FALSE,FALSE,FALSE,8/3/21
+Bromus hordeaceus,Bromus,,hordeaceus,NA,NA,,,kew-401143,TRUE,1.1,Accepted,Poaceae,Bromus,,hordeaceus,,,L.,kew-401143,Accepted,FALSE,FALSE,FALSE,8/3/21
+Acer platanoides,Acer,,platanoides,NA,NA,,,kew-2616254,TRUE,1.1,Accepted,Sapindaceae,Acer,,platanoides,,,L.,kew-2616254,Accepted,FALSE,FALSE,FALSE,8/3/21
+Vicia cracca,Vicia,,cracca,NA,NA,,,ild-9103,TRUE,1.1,Accepted,Leguminosae,Vicia,,cracca,,,L.,ild-9103,Accepted,FALSE,FALSE,FALSE,8/3/21
+Bolboschoenus maritimus,Bolboschoenus,,maritimus,NA,NA,,,kew-221905,TRUE,1.1,Accepted,Cyperaceae,Bolboschoenus,,maritimus,,,(L.) Palla,kew-221905,Accepted,FALSE,FALSE,FALSE,8/3/21
+Alnus glutinosa,Alnus,,glutinosa,NA,NA,,,kew-6364,TRUE,1.1,Accepted,Betulaceae,Alnus,,glutinosa,,,(L.) Gaertn.,kew-6364,Accepted,FALSE,FALSE,FALSE,8/3/21
+Lamium galeobdolon,Lamium,,galeobdolon,NA,NA,,,kew-107452,TRUE,1.1,Accepted,Lamiaceae,Lamium,,galeobdolon,,,(L.) L.,kew-107452,Accepted,FALSE,FALSE,FALSE,8/3/21
+Brachypodium sylvaticum,Brachypodium,,sylvaticum,NA,NA,,,kew-400100,TRUE,1.1,Accepted,Poaceae,Brachypodium,,sylvaticum,,,(Huds.) P.Beauv.,kew-400100,Accepted,FALSE,FALSE,FALSE,8/3/21
+Poa compressa,Poa,,compressa,NA,NA,,,kew-435622,TRUE,1.1,Accepted,Poaceae,Poa,,compressa,,,L.,kew-435622,Accepted,FALSE,FALSE,FALSE,8/3/21
+Arrhenatherum elatius,Arrhenatherum,,elatius,NA,NA,,,kew-395388,TRUE,1.1,Accepted,Poaceae,Arrhenatherum,,elatius,,,(L.) P.Beauv. ex J.Presl & C.Presl.,kew-395388,Accepted,FALSE,FALSE,FALSE,8/3/21
+Deschampsia cespitosa,Deschampsia,,cespitosa,NA,NA,,,kew-407579,TRUE,1.1,Accepted,Poaceae,Deschampsia,,cespitosa,,,(L.) P.Beauv.,kew-407579,Accepted,FALSE,FALSE,FALSE,8/3/21
+Elymus repens,Elymus,,repens,NA,NA,,,kew-411505,TRUE,1.1,Accepted,Poaceae,Elymus,,repens,,,(L.) Gould,kew-411505,Accepted,FALSE,FALSE,FALSE,8/3/21
+Impatiens glandulifera,Impatiens,,glandulifera,NA,NA,,,kew-2862533,TRUE,1.1,Accepted,Balsaminaceae,Impatiens,,glandulifera,,,Royle,kew-2862533,Accepted,FALSE,FALSE,FALSE,8/3/21
+Veronica serpyllifolia ssp. serpyllifolia,Veronica,,serpyllifolia,NA,ssp.,serpyllifolia,,tro-29202494,TRUE,1.1,Synonym,Plantaginaceae,Veronica,,serpyllifolia,,,L.,kew-2462094,Accepted,TRUE,FALSE,FALSE,8/3/21
+Poa trivialis,Poa,,trivialis,NA,NA,,,kew-437547,TRUE,1.1,Accepted,Poaceae,Poa,,trivialis,,,L.,kew-437547,Accepted,FALSE,FALSE,FALSE,8/3/21
+Acer pseudoplatanus,Acer,,pseudoplatanus,NA,NA,,,kew-2616276,TRUE,1.1,Accepted,Sapindaceae,Acer,,pseudoplatanus,,,L.,kew-2616276,Accepted,FALSE,FALSE,FALSE,8/3/21
+Papaver dubium,Papaver,,dubium,NA,NA,,,kew-2560793,TRUE,1.1,Accepted,Papaveraceae,Papaver,,dubium,,,L.,kew-2560793,Accepted,FALSE,FALSE,FALSE,8/3/21
+Draba verna,Draba,,verna,NA,NA,,,kew-2777499,TRUE,1.1,Synonym,Brassicaceae,Erophila,,verna,,,(L.) DC.,kew-2798608,Accepted,FALSE,FALSE,FALSE,8/3/21
+Pilosella officinarum,Pilosella,,officinarum,NA,NA,,,gcc-25499,TRUE,1.1,Accepted,Compositae,Pilosella,,officinarum,,,Vaill.,gcc-25499,Accepted,FALSE,FALSE,FALSE,8/3/21
+Helminthotheca echioides,Helminthotheca,,echioides,NA,NA,,,gcc-8501,TRUE,1.1,Accepted,Compositae,Helminthotheca,,echioides,,,(L.) Holub,gcc-8501,Accepted,FALSE,FALSE,FALSE,8/3/21
+Frangula alnus,Frangula,,alnus,NA,NA,,,kew-2814031,TRUE,1.1,Accepted,Rhamnaceae,Frangula,,alnus,,,Mill.,kew-2814031,Accepted,FALSE,FALSE,FALSE,8/3/21
+Spergularia rubra,Spergularia,,rubra,NA,NA,,,kew-2482087,TRUE,1.1,Accepted,Caryophyllaceae,Spergularia,,rubra,,,(L.) J.Presl & C.Presl,kew-2482087,Accepted,FALSE,FALSE,FALSE,8/3/21
+Eucalyptus globulus,Eucalyptus,,globulus,NA,NA,,,kew-73008,TRUE,1.1,Accepted,Myrtaceae,Eucalyptus,,globulus,,,Labill.,kew-73008,Accepted,FALSE,FALSE,FALSE,8/3/21
+Juncus articulatus,Juncus,,articulatus,NA,NA,,,kew-314426,TRUE,1.1,Accepted,Juncaceae,Juncus,,articulatus,,,L.,kew-314426,Accepted,FALSE,FALSE,FALSE,8/3/21
+Salix cinerea,Salix,,cinerea,NA,NA,,,kew-5001635,TRUE,1.1,Accepted,Salicaceae,Salix,,cinerea,,,L.,kew-5001635,Accepted,FALSE,FALSE,FALSE,8/3/21
+Alopecurus pratensis,Alopecurus,,pratensis,NA,NA,,,kew-391506,TRUE,1.1,Accepted,Poaceae,Alopecurus,,pratensis,,,L.,kew-391506,Accepted,FALSE,FALSE,FALSE,8/3/21
+Campylopus introflexus,Campylopus,,introflexus,NA,NA,,,tro-35156181,TRUE,1.1,Accepted,Dicranaceae,Campylopus,,introflexus,,,(Hedw.) Brid.,tro-35156181,Accepted,FALSE,FALSE,FALSE,8/3/21
+Lupinus polyphyllus,Lupinus,,polyphyllus,NA,NA,,,ild-8908,TRUE,1.1,Accepted,Leguminosae,Lupinus,,polyphyllus,,,Lindl.,ild-8908,Accepted,FALSE,FALSE,FALSE,8/3/21
+Silene vulgaris,Silene,,vulgaris,NA,NA,,,kew-2487840,TRUE,1.1,Accepted,Caryophyllaceae,Silene,,vulgaris,,,(Moench) Garcke,kew-2487840,Accepted,FALSE,FALSE,FALSE,8/3/21
+Rhamnus cathartica,Rhamnus,,cathartica,NA,NA,,,kew-2523018,TRUE,1.1,Accepted,Rhamnaceae,Rhamnus,,cathartica,,,L.,kew-2523018,Accepted,FALSE,FALSE,FALSE,8/3/21
+Achillea ptarmica,Achillea,,ptarmica,NA,NA,,,gcc-132682,TRUE,1.1,Accepted,Compositae,Achillea,,ptarmica,,,L.,gcc-132682,Accepted,FALSE,FALSE,FALSE,8/3/21
+Myosotis arvensis,Myosotis,,arvensis,NA,NA,,,kew-2357149,TRUE,1.1,Accepted,Boraginaceae,Myosotis,,arvensis,,,(L.) Hill,kew-2357149,Accepted,FALSE,FALSE,FALSE,8/3/21
+Rumex acetosa,Rumex,,acetosa,NA,NA,,,kew-2424198,TRUE,1.1,Accepted,Polygonaceae,Rumex,,acetosa,,,L.,kew-2424198,Accepted,FALSE,FALSE,FALSE,8/3/21
+Glyceria maxima,Glyceria,,maxima,NA,NA,,,kew-417855,TRUE,1.1,Accepted,Poaceae,Glyceria,,maxima,,,(Hartm.) Holmb.,kew-417855,Accepted,FALSE,FALSE,FALSE,8/3/21
+Carduus crispus,Carduus,,crispus,NA,NA,,,gcc-114410,TRUE,1.1,Accepted,Compositae,Carduus,,crispus,,,Guirão ex Nyman,gcc-114410,Accepted,FALSE,FALSE,FALSE,8/3/21
+Fragaria vesca,Fragaria,,vesca,NA,NA,,,rjp-23,TRUE,1.1,Accepted,Rosaceae,Fragaria,,vesca,,,L.,rjp-23,Accepted,FALSE,FALSE,FALSE,8/3/21
+Rumex conglomeratus,Rumex,,conglomeratus,NA,NA,,,kew-2424254,TRUE,1.1,Accepted,Polygonaceae,Rumex,,conglomeratus,,,Murray,kew-2424254,Accepted,FALSE,FALSE,FALSE,8/3/21
+Bromus sterilis,Bromus,,sterilis,NA,NA,,,kew-402009,TRUE,1.1,Accepted,Poaceae,Bromus,,sterilis,,,L.,kew-402009,Accepted,FALSE,FALSE,FALSE,8/3/21
+Elodea nuttallii,Elodea,,nuttallii,NA,NA,,,kew-309469,TRUE,1.1,Accepted,Hydrocharitaceae,Elodea,,nuttallii,,,(Planch.) H.St.John,kew-309469,Accepted,FALSE,FALSE,FALSE,8/3/21
+Poa nemoralis,Poa,,nemoralis,NA,NA,,,kew-436600,TRUE,1.1,Accepted,Poaceae,Poa,,nemoralis,,,L.,kew-436600,Accepted,FALSE,FALSE,FALSE,8/3/21
+Filipendula vulgaris,Filipendula,,vulgaris,NA,NA,,,rjp-3,TRUE,1.1,Accepted,Rosaceae,Filipendula,,vulgaris,,,Moench,rjp-3,Accepted,FALSE,FALSE,FALSE,8/3/21
+Sambucus nigra ssp. nigra,Sambucus,,nigra,NA,ssp.,nigra,,tro-50111471,TRUE,1.1,Synonym,Adoxaceae,Sambucus,,nigra,,,L.,kew-2486519,Accepted,FALSE,FALSE,FALSE,8/3/21
+Bistorta officinalis,Bistorta,,officinalis,NA,NA,,,kew-2676825,TRUE,1.1,Synonym,Polygonaceae,Persicaria,,bistorta,,,(L.) Samp.,kew-2571994,Accepted,FALSE,FALSE,FALSE,8/3/21
+Sanguisorba officinalis,Sanguisorba,,officinalis,NA,NA,,,rjp-1010,TRUE,1.1,Accepted,Rosaceae,Sanguisorba,,officinalis,,,L.,rjp-1010,Accepted,FALSE,FALSE,FALSE,8/3/21
+Matricaria discoidea,Matricaria,,discoidea,NA,NA,,,gcc-127165,TRUE,1.1,Accepted,Compositae,Matricaria,,discoidea,,,DC.,gcc-127165,Accepted,FALSE,FALSE,FALSE,8/3/21
+Pulicaria dysenterica,Pulicaria,,dysenterica,NA,NA,,,gcc-112339,TRUE,1.1,Accepted,Compositae,Pulicaria,,dysenterica,,,(L.) Gaertn.,gcc-112339,Accepted,FALSE,FALSE,FALSE,8/3/21
+Senecio sylvaticus,Senecio,,sylvaticus,NA,NA,,,gcc-139882,TRUE,1.1,Accepted,Compositae,Senecio,,sylvaticus,,,L.,gcc-139882,Accepted,FALSE,FALSE,FALSE,8/3/21
+Juncus inflexus,Juncus,,inflexus,NA,NA,,,kew-315191,TRUE,1.1,Accepted,Juncaceae,Juncus,,inflexus,,,L.,kew-315191,Accepted,FALSE,FALSE,FALSE,8/3/21
+Avena barbata,Avena,,barbata,NA,NA,,,kew-397352,TRUE,1.1,Accepted,Poaceae,Avena,,barbata,,,Pott ex Link,kew-397352,Accepted,FALSE,FALSE,FALSE,8/3/21
+Veronica chamaedrys,Veronica,,chamaedrys,NA,NA,,,kew-2453651,TRUE,1.1,Accepted,Plantaginaceae,Veronica,,chamaedrys,,,L.,kew-2453651,Accepted,FALSE,FALSE,FALSE,8/3/21
+Salix fragilis,Salix,,fragilis,NA,NA,,,kew-5000690,TRUE,1.1,Unresolved,Salicaceae,Salix,,fragilis,,,Forssk.,kew-5000690,Unresolved,FALSE,FALSE,FALSE,8/3/21
+Malva moschata,Malva,,moschata,NA,NA,,,kew-2503483,TRUE,1.1,Accepted,Malvaceae,Malva,,moschata,,,L.,kew-2503483,Accepted,FALSE,FALSE,FALSE,8/3/21
+Geum urbanum,Geum,,urbanum,NA,NA,,,rjp-573,TRUE,1.1,Accepted,Rosaceae,Geum,,urbanum,,,L.,rjp-573,Accepted,FALSE,FALSE,FALSE,8/3/21
+Luzula campestris,Luzula,,campestris,NA,NA,,,kew-316212,TRUE,1.1,Accepted,Juncaceae,Luzula,,campestris,,,(L.) DC.,kew-316212,Accepted,FALSE,FALSE,FALSE,8/3/21
+Potamogeton natans,Potamogeton,,natans,NA,NA,,,kew-308642,TRUE,1.1,Accepted,Potamogetonaceae,Potamogeton,,natans,,,L.,kew-308642,Accepted,FALSE,FALSE,FALSE,8/3/21
+Thymus pulegioides,Thymus,,pulegioides,NA,NA,,,kew-205310,TRUE,1.1,Accepted,Lamiaceae,Thymus,,pulegioides,,,L.,kew-205310,Accepted,FALSE,FALSE,FALSE,8/3/21
+Torilis japonica,Torilis,,japonica,NA,NA,,,kew-2438341,TRUE,1.1,Accepted,Apiaceae,Torilis,,japonica,,,(Houtt.) DC.,kew-2438341,Accepted,FALSE,FALSE,FALSE,8/3/21
+Trifolium medium,Trifolium,,medium,NA,NA,,,ild-9039,TRUE,1.1,Accepted,Leguminosae,Trifolium,,medium,,,L.,ild-9039,Accepted,FALSE,FALSE,FALSE,8/3/21
+Glyceria fluitans,Glyceria,,fluitans,NA,NA,,,kew-417786,TRUE,1.1,Accepted,Poaceae,Glyceria,,fluitans,,,(L.) R.Br.,kew-417786,Accepted,FALSE,FALSE,FALSE,8/3/21
+Holcus mollis,Holcus,,mollis,NA,NA,,,kew-419058,TRUE,1.1,Accepted,Poaceae,Holcus,,mollis,,,L.,kew-419058,Accepted,FALSE,FALSE,FALSE,8/3/21
+Vicia sepium,Vicia,,sepium,NA,NA,,,ild-7863,TRUE,1.1,Accepted,Leguminosae,Vicia,,sepium,,,L.,ild-7863,Accepted,FALSE,FALSE,FALSE,8/3/21
+Danthonia decumbens,Danthonia,,decumbens,NA,NA,,,kew-407014,TRUE,1.1,Accepted,Poaceae,Danthonia,,decumbens,,,(L.) DC.,kew-407014,Accepted,FALSE,FALSE,FALSE,8/3/21
+Gnaphalium uliginosum,Gnaphalium,,uliginosum,NA,NA,,,gcc-32241,TRUE,1.1,Accepted,Compositae,Gnaphalium,,uliginosum,,,L.,gcc-32241,Accepted,FALSE,FALSE,FALSE,8/3/21
+Carex nigra,Carex,,nigra,NA,NA,,,kew-229004,TRUE,1.1,Accepted,Cyperaceae,Carex,,nigra,,,(L.) Reichard,kew-229004,Accepted,FALSE,FALSE,FALSE,8/3/21
+Potentilla verna,Potentilla,,verna,NA,NA,,,rjp-490,TRUE,1.1,Synonym,Rosaceae,Potentilla,,grandiflora,,,L.,rjp-105,Accepted,FALSE,FALSE,FALSE,8/3/21
+Scrophularia auriculata,Scrophularia,,auriculata,NA,NA,,,kew-2586267,TRUE,1.1,Accepted,Scrophulariaceae,Scrophularia,,auriculata,,,L.,kew-2586267,Accepted,FALSE,FALSE,FALSE,8/3/21
+Primula elatior,Primula,,elatior,NA,NA,,,kew-2564876,TRUE,1.1,Accepted,Primulaceae,Primula,,elatior,,,(L.) Hill,kew-2564876,Accepted,FALSE,FALSE,FALSE,8/3/21
+Pimpinella saxifraga,Pimpinella,,saxifraga,NA,NA,,,kew-2402811,TRUE,1.1,Accepted,Apiaceae,Pimpinella,,saxifraga,,,L.,kew-2402811,Accepted,FALSE,FALSE,FALSE,8/3/21
+Filipendula ulmaria,Filipendula,,ulmaria,NA,NA,,,rjp-1024,TRUE,1.1,Accepted,Rosaceae,Filipendula,,ulmaria,,,(L.) Maxim.,rjp-1024,Accepted,FALSE,FALSE,FALSE,8/3/21
+Carlina vulgaris,Carlina,,vulgaris,NA,NA,,,gcc-91676,TRUE,1.1,Accepted,Compositae,Carlina,,vulgaris,,,L.,gcc-91676,Accepted,FALSE,FALSE,FALSE,8/3/21
+Aegagropila linnaei,,,linnaei,NA,NA,,,,FALSE,1.1,,,Aegagropila,,linnaei,NA,,,,,TRUE,FALSE,FALSE,8/3/21
+Pinus halepensis,Pinus,,halepensis,NA,NA,,,kew-2561998,TRUE,1.1,Accepted,Pinaceae,Pinus,,halepensis,,,Mill.,kew-2561998,Accepted,FALSE,FALSE,FALSE,8/3/21
+Ehrharta stipoides,Ehrharta,,stipoides,NA,NA,,,kew-410556,TRUE,1.1,Accepted,Poaceae,Ehrharta,,stipoides,,,Labill.,kew-410556,Accepted,FALSE,FALSE,FALSE,8/3/21

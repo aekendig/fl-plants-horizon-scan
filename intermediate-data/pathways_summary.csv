@@ -1,0 +1,19 @@
+pathway,Risk.group,species,pathway_orig
+contaminant,high,4,transport contaminant
+contaminant,low,28,transport contaminant
+contaminant,medium,9,transport contaminant
+corridor,high,0,corridor
+corridor,low,10,corridor
+corridor,medium,4,corridor
+escape,high,5,escape from confinement
+escape,low,51,escape from confinement
+escape,medium,19,escape from confinement
+release,high,2,release in nature
+release,low,4,release in nature
+release,medium,1,release in nature
+stowaway,high,2,transport stowaway
+stowaway,low,23,transport stowaway
+stowaway,medium,10,transport stowaway
+unaided,high,3,unaided
+unaided,low,23,unaided
+unaided,medium,9,unaided
