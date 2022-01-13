@@ -8,7 +8,7 @@
 
 #### data: Taxonomic Name Resolution Service ####
 
-# I put the CABI plant species list into this website (https://urldefense.proofpoint.com/v2/url?u=http-3A__tnrs.iplantcollaborative.org_&d=DwIGAg&c=sJ6xIWYx-zLMB3EPkvcnVg&r=HjPcW3eohEbbkb1_EzN7HHqRD9KQKShycu2tAMx9e8I&m=-NBGbCgVEI0-gtS1sVfo_AK5pxSmLJRDKZxNQSyzQpM&s=u-1eku7Qbl8lfXV2ezOdjeLkDdNnQ8f1ijy6vBnCsqI&e= )
+# I put the CABI plant species list into this website (https://tnrs.biendata.org/)
 
 ## used default settings except for matching: 
 # processing mode: perform name resolution
@@ -21,7 +21,7 @@
 
 #### data: Atlas of Florida Plants ####
 
-# Downloaded data from https://urldefense.proofpoint.com/v2/url?u=https-3A__florida.plantatlas.usf.edu_browse_county&d=DwIGAg&c=sJ6xIWYx-zLMB3EPkvcnVg&r=HjPcW3eohEbbkb1_EzN7HHqRD9KQKShycu2tAMx9e8I&m=-NBGbCgVEI0-gtS1sVfo_AK5pxSmLJRDKZxNQSyzQpM&s=Lle2Ev1kgwqY9jYa7P8GTUOkctWPGjTFNRnmhxDU9xE&e=  on December 11, 2019
+# Downloaded data from https://florida.plantatlas.usf.edu/browse/county on December 11, 2019
 # selected all counties and browse
 # chose "Any" for the record format
 
@@ -34,7 +34,7 @@
 #### data: GloNAF ####
 
 # GloNAF 1.2 database
-# Downloaded from https://urldefense.proofpoint.com/v2/url?u=https-3A__idata.idiv.de_DDM_Data_ShowData_257&d=DwIGAg&c=sJ6xIWYx-zLMB3EPkvcnVg&r=HjPcW3eohEbbkb1_EzN7HHqRD9KQKShycu2tAMx9e8I&m=-NBGbCgVEI0-gtS1sVfo_AK5pxSmLJRDKZxNQSyzQpM&s=WNVhY8fWyWOVKVi3vjK_w5eFatm4t_v6YKrnkHK8OyE&e=  on December 11, 2019
+# Downloaded from https://idata.idiv.de/DDM/Data/ShowData/257 on December 11, 2019
 # Re-saved this file as a csv becuase it was saved as UTF-16
 
 
@@ -80,6 +80,8 @@ library(tidyverse)
 library(taxize) # classification function
 library(rgbif) # occ_search function
 library(data.table) # rbindlist function
+library(janitor)
+library(keyring) # set up your GBIF username and password
 
 
 #### extract plants from CABI list ####
@@ -102,7 +104,7 @@ colnames(cabi2) <- str_replace_all(colnames(cabi), " ", ".")
 # do.call(rbind, uncat_itis) %>%
   # rownames_to_column("species") %>%
   # filter(name == "Plantae") 
-# # this search misses one species from my manual search on The Plant List (https://urldefense.proofpoint.com/v2/url?u=http-3A__www.theplantlist.org_&d=DwIGAg&c=sJ6xIWYx-zLMB3EPkvcnVg&r=HjPcW3eohEbbkb1_EzN7HHqRD9KQKShycu2tAMx9e8I&m=-NBGbCgVEI0-gtS1sVfo_AK5pxSmLJRDKZxNQSyzQpM&s=xY931O5opKmaYUzCTE3xVLOOAAhWXB_BmEIW-tchbJE&e= ) on December 11, 2019
+# # this search misses one species from my manual search on The Plant List (http://www.theplantlist.org/) on December 11, 2019
 
 # uncat_gbif <- classification(cabi_na$Preferred.scientific.name, db = "gbif") 
 # # manual entries needed when multiple records found - chose the records with status ACCEPTED and the scientific name most closely matched to the name submitted
@@ -145,24 +147,24 @@ nrow(species)
 # write_tsv(species, "/intermediate-data/cabi_full_list_plants.txt", col_names = F)
 
 
-#### synonyms according to Atlas ####
+#### accepted names according to Atlas ####
 
 # import data
-synonyms_atlas <- read.csv("data/PlantAtlasDataExport-20191211-194219.csv")
+atlas_out <- read.csv("data/PlantAtlasDataExport-20191211-194219.csv")
 # read_csv has issues with the first few rows having NA's
 
 # accepted names
-atlas_acc <- synonyms_atlas %>%
+atlas_acc <- atlas_out %>%
   filter(Type == "Accepted Name") %>%
   select(Scientific_Name, X.Plant_ID) %>%
   rename(name = Scientific_Name) %>%
   mutate(accepted = 1,
-         accepted_name = name) %>%
+         acc_name = name) %>%
   as_tibble()
 
 # check for duplicates
 atlas_acc %>%
-  filter(duplicated(name) == T)
+  get_dupes(name)
 # none
 
 # check for NA's
@@ -172,132 +174,86 @@ atlas_acc %>%
 
 # synonyms
 # add accepted name
-# indicate names with direct association to CABI list
-atlas_syn <- synonyms_atlas %>%
+atlas_syn <- atlas_out %>%
   filter(Type == "Synonym")  %>%
   select(Scientific_Name, X.Plant_ID) %>%
   rename(name = Scientific_Name) %>%
   mutate(accepted = 0) %>%
-  left_join(select(atlas_acc, X.Plant_ID, accepted_name)) %>%
-  mutate(cabi = case_when(name %in% species$Preferred.scientific.name | accepted_name %in% species$Preferred.scientific.name ~ 1,
-                                 TRUE ~ 0)) %>%
-  as_tibble()
-
-# synonyms with association to CABI
-atlas_cabi <- atlas_syn %>%
-  filter(cabi == 1)
-
-# update CABI association if the accepted name has an association to CABI (i.e., one of its synonyms is in the species list, but the accepted name itself is not)
-# remove species with no association
-atlas_syn2 <- atlas_syn %>%
-  mutate(cabi = case_when(accepted_name %in% atlas_cabi$accepted_name ~ 1,
-                          TRUE ~ cabi)) %>%
-  filter(cabi == 1)
-
-# do any of the synonyms match the accepted names?
-atlas_syn2 %>%
-  filter(name == accepted_name)
-# no
+  left_join(select(atlas_acc, X.Plant_ID, acc_name)) %>%
+  as_tibble() %>%
+  unique() # some rows are duplicated
 
 # check for duplicates
-atlas_syn2 %>%
-  filter(duplicated(name) == T)
-# 97
+atlas_syn %>%
+  get_dupes(name)
+# some synonyms have multiple accepted names
 
 # check for NA's
-atlas_syn2 %>%
+atlas_syn %>%
   filter(is.na(name))
 # none
 
-atlas_syn2 %>%
-  filter(is.na(accepted_name))
-# none
+# combine
+atlas_all <- atlas_acc %>%
+  full_join(atlas_syn)
 
-# identify duplicate synonym/accepted name pairs
-# remove these
-# identify duplicate synonyms
-atlas_syn3 <- atlas_syn2 %>%
-  mutate(dup_syn_acc = duplicated(paste(name, accepted_name, sep = "_"))) %>%
-  filter(dup_syn_acc == F) %>%
-  mutate(dup_syn = duplicated(name))
+# select for names in CABI list
+atlas_cabi <- atlas_all %>%
+  filter(name %in% species$Preferred.scientific.name)
 
-# check for duplicates
-(atlas_dup <- atlas_syn3 %>%
-  filter(dup_syn == T))
-# 3
+# check for duplicate names
+(atlas_cabi_dup_name <- atlas_cabi %>%
+  get_dupes(name))
+# in all cases, the submitted name is an accepted name and also a synonym of another accepted name
+# use the submitted name as the accepted name
 
-# are any of these synonyms in the CABI list?
-atlas_syn3 %>%
-  filter(dup_syn == T & name %in% species$Preferred.scientific.name)
-# no - remove both cases because we don't know what the accepted name is
+atlas_cabi2 <- atlas_cabi %>%
+  filter(!(name %in% atlas_cabi_dup_name$name & accepted == 0))
 
-# remove duplicated species
-atlas_syn4 <- atlas_syn3 %>%
-  filter(!(name %in% atlas_dup$name))
-
-# subset accepted names for relevant ones
-atlas_acc2 <- atlas_acc %>%
-  filter(name %in% atlas_syn4$accepted_name | name %in% species$Preferred.scientific.name)
-
-# make sure lists are unique
-(acc_syn_atlas <- atlas_syn4 %>%
-  filter(name %in% atlas_acc2$name))
-# 3 species
-# checked all of these with John Kunzer and they should be kept as separate species (don't keep one as the synonym of the other)
-
-# all 6 species should be in the accepted list
-atlas_acc2 %>%
-  filter(name %in% acc_syn_atlas$name | name %in% acc_syn_atlas$accepted_name)
-# yes
-
-# combine dataframe
-# remove unnecessary synonyms
-# remove unnecessary columns
-atlas_fin <- atlas_syn4 %>%
-  filter(!(name %in% atlas_acc2$name)) %>%
-  select(name, accepted, accepted_name) %>%
-  full_join(select(atlas_acc2, name, accepted, accepted_name)) %>%
-  mutate(Atlas = 1) %>%
-  mutate(name = as.character(name),
-         accepted_name = as.character(accepted_name))
+# check for accepted names
+atlas_cabi2 %>%
+  filter(is.na(acc_name))
 
 
-#### synonyms according to ITIS ####
+#### accepted names according to ITIS ####
 
 # # get synonyms from ITIS
-# synonyms_itis <- synonyms(species$Preferred.scientific.name, db = "itis") 
-# # Manual entries needed when multiple records found. Decision hierarchy: scientific name must match the name submitted, if not none of the records were chosen. Chose the records with status "accepted", then chose record with the most information associated with it, then chose the first record listed.
+# itis_out <- synonyms(species$Preferred.scientific.name, db = "itis") 
+# # Manual entries needed when multiple records found. Decision hierarchy: scientific name must match the name submitted, if not, none of the records were chosen. Chose the records with status "accepted", then chose record with the most information associated with it, then chose the first record listed.
 
 # # convert to dataframe
 # # remove V1 (added from species with no matches, all NA's)
-# synonyms_itis2 <- rbindlist(lapply(synonyms_itis, as.data.table), use.names = T, fill = T, idcol = "species") %>%
+# itis_out2 <- rbindlist(lapply(itis_out, as.data.table), use.names = T, fill = T, idcol = "species") %>%
 #   select(-V1) 
-# head(synonyms_itis2)
+# head(itis_out2)
 # 
 # # save ITIS synonyms
-# write_csv(synonyms_itis2, "intermediate-data/cabi_full_list_plants_itis_synonyms.csv")
+# write_csv(itis_out2, "intermediate-data/cabi_full_list_plants_itis_synonyms.csv")
 
 # import back in
-synonyms_itis2 <- read_csv("intermediate-data/cabi_full_list_plants_itis_synonyms.csv")
+itis_out2 <- read_csv("intermediate-data/cabi_full_list_plants_itis_synonyms.csv")
 
-# accepted names
-# submitted name matches the accepted name or there's an accepted name for the submitted name
-itis_acc <- synonyms_itis2 %>%
-  filter(sub_tsn == acc_tsn) %>%
+# accepted species with no synonyms returned 0 rows
+# species that were not found have an NA in sub_tsn
+itis_mis <- species %>%
+  filter(!(Preferred.scientific.name %in% itis_out2$species) & 
+           !(Preferred.scientific.name %in% itis_out2$acc_name)) %>%
+  rename(name = Preferred.scientific.name)
+# manually checked first 10 names to confirm that they're accepted
+
+# submitted name matches the accepted name
+itis_acc <- itis_out2 %>%
+  filter(sub_tsn == acc_tsn) %>% # NA values for sub_tsn are omitted
   select(species) %>%
   unique() %>%
   rename(name = species) %>%
-  full_join(synonyms_itis2 %>%
-              filter(!is.na(acc_name)) %>%
-              select(acc_name) %>%
-              unique() %>%
-              rename(name = acc_name)) %>%
+  full_join(itis_mis) %>%
   mutate(accepted = 1,
-         accepted_name = name)
+         acc_name = name)
 
 # check for duplicates
 itis_acc %>%
-  filter(duplicated(name) == T)
+  get_dupes(name)
 # none
 
 # check for NA's
@@ -306,170 +262,189 @@ itis_acc %>%
 # none
 
 # synonyms
-# submitted name matches the synonym name or there's a synonym for the submitted name
-itis_syn <- synonyms_itis2 %>%
-  filter(sub_tsn == syn_tsn) %>%
+# submitted name matches the synonym name
+itis_syn <- itis_out2 %>%
+  filter(sub_tsn == syn_tsn) %>% # NA values for sub_tsn are omitted
   select(species, acc_name) %>%
   unique() %>%
-  rename(name = species,
-         accepted_name = acc_name) %>%
-  full_join(synonyms_itis2 %>%
-              filter(!is.na(syn_name)) %>%
-              select(syn_name, acc_name) %>%
-              unique() %>%
-              rename(name = syn_name,
-                     accepted_name = acc_name)) %>%
-  mutate(accepted = 0) %>%
-  mutate(cabi = case_when(name %in% species$Preferred.scientific.name | accepted_name %in% species$Preferred.scientific.name ~ 1,
-                          TRUE ~ 0))
-
-# accepted names with association to CABI
-itis_cabi <- itis_syn %>%
-  filter(cabi == 1)
-
-# update CABI association if the accepted name has an association
-# remove species with no association
-itis_syn2 <- itis_syn %>%
-  mutate(cabi = case_when(accepted_name %in% itis_cabi$accepted_name ~ 1,
-                          TRUE ~ cabi)) %>%
-  filter(cabi == 1)
-
-# do any of the synonyms match the accepted names?
-(acc_syn_itis_match <- itis_syn2 %>%
-  filter(name == accepted_name))
-# 6
-
-# are these in the accepted dataset?
-itis_acc %>%
-  filter(name %in% acc_syn_itis_match$name)
-# yes - remove from synonym list
+  rename(name = species) %>%
+  mutate(accepted = 0)
 
 # check for duplicates
-itis_syn2 %>%
-  filter(duplicated(name) == T)
-# 149
+itis_syn %>%
+  get_dupes(name)
 
 # check for NA's
-itis_syn2 %>%
+itis_syn %>%
   filter(is.na(name))
 # none
 
-itis_syn2 %>%
-  filter(is.na(accepted_name))
-# 2815
+itis_syn %>%
+  filter(is.na(acc_name))
+# none
 
-# remove name == acc
-# remove NA acc
-# identify duplicate synonym/accepted name pairs
-# remove these
-# identify duplicate synonyms
-itis_syn3 <- itis_syn2 %>%
-  filter(name != accepted_name & !is.na(accepted_name)) %>%
-  mutate(dup_syn_acc = duplicated(paste(name, accepted_name, sep = "_"))) %>%
-  filter(dup_syn_acc == F) %>%
-  mutate(dup_syn = duplicated(name))
-  
+# combine
+itis_cabi <- itis_acc %>%
+  full_join(itis_syn)
+
+# check for only CABI names
+itis_cabi %>%
+  filter(!(name %in% species$Preferred.scientific.name))
+
 # check for duplicates
-(itis_dup <- itis_syn3 %>%
-  filter(dup_syn == T))
-# 1
+itis_cabi %>%
+  get_dupes(name)
+# none
 
-# are any of these synonyms in the CABI list?
-itis_syn3 %>%
-  filter(dup_syn == T & name %in% species$Preferred.scientific.name)
-# no - remove
-
-# remove duplicated species
-itis_syn4 <- itis_syn3 %>%
-  filter(!(name %in% itis_dup$name))
-
-# subset accepted names for relevant ones
-itis_acc2 <- itis_acc %>%
-  filter(name %in% itis_syn4$accepted_name | name %in% species$Preferred.scientific.name)
-
-# make sure lists are unique
-(acc_syn_itis <- itis_syn4 %>%
-    filter(name %in% itis_acc2$name))
-# 1 species
-# keep separate:
-# https://plants.usda.gov/home/plantProfile?symbol=LIDUD
-# https://plants.usda.gov/home/plantProfile?symbol=LIPR5
-
-# both species should be in the accepted list
-itis_acc2 %>%
-  filter(name %in% acc_syn_itis$name | name %in% acc_syn_itis$accepted_name)
-# yes
-
-# combine dataframe
-# remove unnecessary synonyms
-# remove unnecessary columns
-itis_fin <- itis_syn4 %>%
-  filter(!(name %in% itis_acc$name)) %>%
-  select(name, accepted, accepted_name) %>%
-  full_join(select(itis_acc2, name, accepted, accepted_name)) %>%
-  mutate(ITIS = 1)
+# check for accepted names
+itis_cabi %>%
+  filter(is.na(acc_name))
 
 
-#### synonyms according to TNRS ####
+#### accepted names according to TNRS ####
 
 # import data from TNRS
-synonyms_tnrs <- read_tsv("intermediate-data/cabi_full_list_plants_tnrs_synonyms_20200316.txt")
- 
+tnrs_out <- read_tsv("intermediate-data/cabi_full_list_plants_tnrs_synonyms_20200316.txt")
+
 # make sure all CABI species were assessed
-length(unique(synonyms_tnrs$Name_submitted)) 
+length(unique(tnrs_out$Name_submitted)) 
 # yes, 2128
 
 # look at warnings
-unique(synonyms_tnrs$Warnings)
+unique(tnrs_out$Warnings)
 # Ambiguous match
 
 # look at status for species with this warning
-filter(synonyms_tnrs, Warnings == "[Ambiguous match]") %>%
+filter(tnrs_out, Warnings == "[Ambiguous match]") %>%
   select(Taxonomic_status) %>%
   unique()
-# Accepted
 
 # look at examples
-synonyms_tnrs %>%
-  filter(Warnings == "[Ambiguous match]" & Taxonomic_status == "Accepted") %>%
-  select(Name_submitted, Name_matched)
+tnrs_out %>%
+  filter(Warnings == "[Ambiguous match]" & Taxonomic_status %in% c("Accepted", "Synonym")) %>%
+  select(Name_submitted, Name_matched) %>%
+  unique()
 # they look exactly the same to me, lots of duplicates though
 
-# look at taxonomic_status
-unique(synonyms_tnrs$Taxonomic_status)
-
 # do any of the NA's have accepted names?
-synonyms_tnrs %>%
+tnrs_out %>%
   filter(is.na(Taxonomic_status)) %>%
   select(Accepted_name) %>%
   unique()
 # no
 
 # look at some non-accepted statuses
-synonyms_tnrs %>%
+tnrs_out %>%
   filter(!(Taxonomic_status %in% c("Accepted", "Synonym"))) %>%
   select(Accepted_name) %>%
   unique()
-# 56 have accepted names
+# 55 have accepted names
+
+# tnrs returns multiple accepted names or statuses (accepted/synonym) per species
+# resolve by choosing accepted with the most sources if multiple options
+tnrs_out2 <- tnrs_out %>%
+  filter(Taxonomic_status %in% c("Accepted", "Synonym")) %>%
+  group_by(Name_matched, Taxonomic_status, Accepted_name) %>%
+  summarize(Source = paste(unique(Source), collapse = ";")) %>% # sources per accepted name
+  ungroup() %>%
+  rowwise() %>%
+  mutate(Source = paste(unique(str_split(Source, ";")[[1]]), collapse = ";")) %>% # remove duplicates
+  ungroup() %>%
+  mutate(sources = str_count(Source, ";") + 1, # number of sources that agree on accepted name
+         name_accepted = if_else(Name_matched == Accepted_name, 1, 0)) %>%
+  group_by(Name_matched) %>%
+  mutate(acc_names = n_distinct(Accepted_name), # number of accepted names
+         max_sources = max(sources), # highest support for an accepted name
+         name_accepted_all = as.numeric(sum(name_accepted) > 0)) %>% # is the name accepted by any source?
+  ungroup() %>%
+  filter(acc_names == 1 | (acc_names > 1 & sources == max_sources)) %>% # choose accepted names with most sources
+  group_by(Name_matched) %>%
+  mutate(acc_names = n_distinct(Accepted_name)) %>% # recalculate accepted names
+  ungroup() %>%
+  filter(acc_names == 1 | (acc_names > 1 & name_accepted == 1) | (acc_names > 1 & name_accepted_all == 0)) %>% # choose the CABI name, if accepted
+  group_by(Name_matched) %>%
+  mutate(acc_names = n_distinct(Accepted_name)) %>% # recalculate accepted names
+  ungroup()
+  
+# remaining duplicates
+n_distinct(filter(tnrs_out2, acc_names > 1)$Name_matched)
+# 41 taxa with multiple accepted names
+
+# sources
+unique(filter(tnrs_out2, acc_names > 1)$Source)
+
+# prioritize sources
+tnrs_res <- tnrs_out2 %>%
+  filter(acc_names > 1) %>%
+  select(Name_matched, Accepted_name, Source) %>%
+  pivot_wider(names_from = Source,
+              values_from = Accepted_name) %>%
+  rename_with(str_replace_all, pattern = ";", replacement = "_") %>%
+  unnest(c(gcc, tropicos, tpl, usda, tpl_tropicos, tpl_usda)) %>%
+  mutate(Accepted_name = case_when(!is.na(tropicos) ~ tropicos,
+                                   !is.na(tpl_tropicos) ~ tpl_tropicos,
+                                   is.na(tropicos) & !is.na(tpl) ~ tpl,
+                                   is.na(tpl_tropicos) & !is.na(tpl_usda) ~ tpl_usda,
+                                   is.na(tropicos) & is.na(tpl) & !is.na(usda) ~ usda,
+                                   TRUE ~ gcc),
+         Source = case_when(!is.na(tropicos) ~ "tropicos",
+                            !is.na(tpl_tropicos) ~ "tpl_tropicos",
+                            is.na(tropicos) & !is.na(tpl) ~ "tpl",
+                            is.na(tpl_tropicos) & !is.na(tpl_usda) ~ "tpl_usda",
+                            is.na(tropicos) & is.na(tpl) & !is.na(usda) ~ "usda",
+                            TRUE ~ "gcc")) %>%
+  select(Name_matched, Accepted_name, Source) %>%
+  unique()
+
+# all names included?
+filter(tnrs_res, is.na(Accepted_name))
+n_distinct(tnrs_res$Name_matched) # 41
+
+# remaining duplicates that are not in other two sources
+(tnrs_res_dupes <- tnrs_res %>%
+  get_dupes(Name_matched) %>%
+  filter(!(Name_matched %in% atlas_cabi2$name) &
+           !(Name_matched %in% itis_cabi$name)))
+
+# manually resolve
+tnrs_res2 <- tnrs_res %>%
+  mutate(Accepted_name = case_when(Name_matched == "Achillea punctata" ~ "Achillea alpina", # confirmed with tpl
+                                   Name_matched == "Aster salignus" ~ "Symphyotrichum × salignum", # confirmed with ITIS, Tropicos, and Wikipedia (looked up common name from CABI)
+                                   Name_matched == "Haplophyllum buxbaumii" ~ "Ruta buxbaumii", # confirmed with GBIF (in France)
+                                   Name_matched == "Hieracium grandidens" ~ "Hieracium bathycephalum", # traced record from CABI to Seebens et al. 2017
+                                   Name_matched == "Hieracium pulmonarioides" ~ "Hieracium amplexicaule subsp. pulmonarioides", # confirmed with GBIF (invasive in Europe)
+                                   TRUE ~ Accepted_name),
+         Taxonomic_status = if_else(Name_matched == Accepted_name, "Accepted", "Synonym")) %>%
+  unique()
+
+# check that all were resolved that needed to be
+tnrs_res2 %>%
+  get_dupes(Name_matched) %>%
+  filter(!(Name_matched %in% atlas_cabi2$name) &
+           !(Name_matched %in% itis_cabi$name))
+
+# replace the species with more than one accepted name
+tnrs_out3 <- tnrs_out2 %>%
+  filter(acc_names == 1) %>%
+  full_join(tnrs_res2)
+
+# check number of species
+n_distinct(tnrs_out2$Name_matched)
+n_distinct(tnrs_out3$Name_matched)
 
 # accepted names
-# submitted name matches the accepted name or there's an accepted name for the submitted name
-tnrs_acc <- synonyms_tnrs %>%
-  filter(Taxonomic_status == "Accepted") %>%
+# submitted name matches the accepted name
+tnrs_acc <- tnrs_out3 %>%
+  filter(Name_matched == Accepted_name) %>%
   select(Name_matched) %>%
   unique() %>%
   rename(name = Name_matched) %>%
-  full_join(synonyms_tnrs %>%
-              filter(Taxonomic_status == "Synonym" & !is.na(Accepted_name)) %>%
-              select(Accepted_name) %>%
-              unique() %>%
-              rename(name = Accepted_name)) %>%
   mutate(accepted = 1,
-         accepted_name = name)
+         acc_name = name)
 
 # check for duplicates
 tnrs_acc %>%
-  filter(duplicated(name) == T)
+  get_dupes(name)
 # none
 
 # check for NA's
@@ -478,352 +453,255 @@ tnrs_acc %>%
 # none  
 
 # synonyms
-# submitted name matches the synonym name or there's a synonym for the submitted name
-tnrs_syn <- synonyms_tnrs %>%
-  filter(Taxonomic_status == "Synonym") %>%
+# submitted name matches a synonym name
+# there are species that are listed as synonyms and accepted names
+# use accepted names in case above
+tnrs_syn <- tnrs_out3 %>%
+  filter(Name_matched != Accepted_name & !(Name_matched %in% tnrs_acc$name)) %>%
   select(Name_matched, Accepted_name) %>%
   unique() %>%
   rename(name = Name_matched,
-         accepted_name = Accepted_name) %>%
-  mutate(accepted = 0) %>%
-  mutate(cabi = case_when(name %in% species$Preferred.scientific.name | accepted_name %in% species$Preferred.scientific.name ~ 1,
-                          TRUE ~ 0))
-
-# synonyms with association to CABI
-tnrs_cabi <- tnrs_syn %>%
-  filter(cabi == 1)
-
-# update CABI association if the accepted name has an association (i.e., one of its synonyms is in the species list, but the accepted name itself is not)
-# remove species with no association
-tnrs_syn2 <- tnrs_syn %>%
-  mutate(cabi = case_when(accepted_name %in% tnrs_cabi$accepted_name ~ 1,
-                          TRUE ~ cabi)) %>%
-  filter(cabi == 1)
-
-# do any of the synonyms match the accepted names?
-(acc_syn_tnrs_match <- tnrs_syn2 %>%
-    filter(name == accepted_name))
-# 42
-
-# are these in the accepted dataset?
-acc_syn_tnrs_match %>%
-  filter(!(accepted_name %in% tnrs_acc$name))
-# yes - remove from synonyms
+         acc_name = Accepted_name) %>%
+  mutate(accepted = 0)
 
 # check for duplicates
-tnrs_syn2 %>%
-  filter(duplicated(name) == T)
-# 188
+tnrs_syn %>%
+  get_dupes(name)
+# just Solanum alatum (in another database)
 
 # check for NA's
-tnrs_syn2 %>%
+tnrs_syn %>%
   filter(is.na(name))
-# none  
-
-tnrs_syn2 %>%
-  filter(is.na(accepted_name))
-# one
-
-# remove name == acc
-# remove NA acc
-# identify duplicate synonym/accepted name pairs
-# remove these
-# identify duplicate synonyms
-tnrs_syn3 <- tnrs_syn2 %>%
-  filter(name != accepted_name & !is.na(accepted_name)) %>%
-  mutate(dup_syn_acc = duplicated(paste(name, accepted_name, sep = "_"))) %>%
-  filter(dup_syn_acc == F) %>%
-  mutate(dup_syn = duplicated(name))
-
-# check for duplicates
-tnrs_syn3 %>%
-  filter(name %in% filter(tnrs_syn3, dup_syn == T)$name) 
-# 315
-
-# how many are in the CABI list?
-tnrs_syn3 %>%
-  filter(name %in% filter(tnrs_syn3, dup_syn == T)$name) %>%
-  filter(name %in% species$Preferred.scientific.name)
-# all of them
-# can't resolve all of these - remove because we don't know the accepted name
-
-# resolve duplicates
-tnrs_syn4 <- tnrs_syn3 %>%
-  filter(!(name %in% filter(tnrs_syn3, dup_syn == T)$name))
-
-# subset accepted names for relevant ones
-tnrs_acc2 <- tnrs_acc %>%
-  filter(name %in% tnrs_syn4$accepted_name | name %in% species$Preferred.scientific.name)
-
-# make sure lists are unique
-(acc_syn_tnrs <- tnrs_syn4 %>%
-    filter(name %in% tnrs_acc2$name))
-# 398
-# too many to resolve - remove all
-
-# remove overlapping species
-# merge lists
-tnrs_fin <- tnrs_syn4 %>%
-  filter(!(name %in% acc_syn_tnrs$name)) %>%
-  select(name, accepted, accepted_name) %>%
-  full_join(tnrs_acc2 %>%
-              filter(!(name %in% acc_syn_tnrs$name))) %>%
-  mutate(TNRS = 1)
-
-
-#### combine synonyms ####
-
-# see how many unique names each list contributes
-atlas_fin %>%
-  filter(!(name %in% c(itis_fin$name, tnrs_fin$name))) %>%
-  nrow()
-# 5490
-
-itis_fin %>%
-  filter(!(name %in% c(atlas_fin$name, tnrs_fin$name))) %>%
-  nrow()
-# 859
-
-tnrs_fin %>%
-  filter(!(name %in% c(itis_fin$name, atlas_fin$name))) %>%
-  nrow()
-# 1222
-
-
-### use Atlas as the first authority when there are accepted name/synonym disagreements ###
-
-# are any accepted names in the Atlas synonym list?
-(syn_atlas_acc_itis <- itis_fin %>%
-  filter(accepted == 1 & name %in% filter(atlas_fin, accepted == 0)$name))
-# 26 species
-(syn_atlas_acc_tnrs <- tnrs_fin %>%
-    filter(accepted == 1 & name %in% filter(atlas_fin, accepted == 0)$name))
-# 53 species
-
-# how many synonyms are associated with these names and not in the atlas?
-itis_fin %>%
-  filter(accepted == 0 & accepted_name %in% syn_atlas_acc_itis$accepted_name & !(name %in% atlas_fin$name))
-# 18
-tnrs_fin %>%
-  filter(accepted == 0 & accepted_name %in% syn_atlas_acc_tnrs$accepted_name & !(name %in% atlas_fin$name))
-# 1
-# add the Atlas accepted name to these
-
-# extract Atlas names and accepted names
-atlas_acc_rep <- atlas_fin %>%
-  filter(name %in% c(syn_atlas_acc_itis$accepted_name, syn_atlas_acc_tnrs$accepted_name)) %>%
-  rename(atlas_accepted_name = accepted_name, accepted_name = name) %>%
-  select(accepted_name, atlas_accepted_name)
-
-# merge with Atlas names
-# replace current accepted names
-# remove the accepted name row
-itis_fin2 <- itis_fin %>%
-  left_join(atlas_acc_rep) %>%
-  mutate(accepted_name = case_when(!is.na(atlas_accepted_name) ~ atlas_accepted_name,
-                                   TRUE ~ accepted_name)) %>%
-  filter(!(accepted == 1 & name != accepted_name))
-
-tnrs_fin2 <- tnrs_fin %>%
-  left_join(atlas_acc_rep) %>%
-  mutate(accepted_name = case_when(!is.na(atlas_accepted_name) ~ atlas_accepted_name,
-                                   TRUE ~ accepted_name)) %>%
-  filter(!(accepted == 1 & name != accepted_name))
-
-# are any synonyms in the Atlas accepted list?
-(acc_atlas_syn_itis <- itis_fin2 %>%
-    filter(accepted == 0 & name %in% atlas_fin$accepted_name))
-# 7 species
-(acc_atlas_syn_tnrs <- tnrs_fin2 %>%
-    filter(accepted == 0 & name %in% atlas_fin$accepted_name))
-# no species
-
-# how many accepted names are associated with these names and not in the atlas?
-itis_fin2 %>%
-  filter(accepted == 0 & name %in% acc_atlas_syn_itis$name & !(accepted_name %in% atlas_fin$name))
-# 2
-
-# are these in earlier atlas versions?
-synonyms_atlas %>%
-  filter(Scientific_Name %in% c("Nephrolepis brownii", "Tristagma uniflorum"))
-# N. brownii is - assume is a separate species
-# T. uniflorum can be a synonym of I. uniflorum: https://www.calflora.org/cgi-bin/namestatus.cgi?taxon=Ipheion+uniflorum&aflag=all
-
-# is N. brownii in cabi?
-species %>%
-  filter(Preferred.scientific.name == "Nephrolepis brownii")
-# no
-
-# are I. uniflorum or T. uniflorum in cabi?
-species %>%
-  filter(Preferred.scientific.name %in% c("Tristagma uniflorum", "Ipheion uniflorum"))
-# just I. uniflorum
-
-# are the accepted names included on their own?
-itis_fin2 %>%
-  filter((accepted == 1 & accepted_name %in% acc_atlas_syn_itis$accepted_name) | accepted_name %in% c("Nephrolepis brownii", "Tristagma uniflorum"))
-# just the two that are not in the Atlas list
-# additional synonyms
-
-# remove synonyms that should be accepted names (these will be added from Atlas)
-# remove all rows with T. uniflorum as the accepted name
-itis_fin3 <- itis_fin2 %>%
-  filter(!(name %in% acc_atlas_syn_itis$name | accepted_name == "Tristagma uniflorum"))
-
-
-### use ITIS as the authority relative to TNRS ###
-
-# are any accepted names in the ITIS synonym list?
-(syn_itis_acc_tnrs <- tnrs_fin2 %>%
-    filter(accepted == 1 & name %in% filter(itis_fin3, accepted == 0)$name))
-# 42 species
-
-# how many synonyms are associated with these names and not in ITIS?
-tnrs_fin2 %>%
-  filter(accepted == 0 & accepted_name %in% syn_itis_acc_tnrs$accepted_name & !(name %in% itis_fin3$name))
-# none
-
-# extract ITIS names and accepted names
-itis_acc_rep <- itis_fin3 %>%
-  filter(name %in% syn_itis_acc_tnrs$accepted_name) %>%
-  rename(itis_accepted_name = accepted_name, accepted_name = name) %>%
-  select(accepted_name, itis_accepted_name)
-
-# merge with ITIS names
-# replace current accepted names
-# remove the accepted name row
-tnrs_fin3 <- tnrs_fin2 %>%
-  left_join(itis_acc_rep) %>%
-  mutate(accepted_name = case_when(!is.na(itis_accepted_name) ~ itis_accepted_name,
-                                   TRUE ~ accepted_name)) %>%
-  filter(!(accepted == 1 & name != accepted_name))
-
-# are any synonyms in the ITIS accepted list?
-(acc_itis_syn_tnrs <- tnrs_fin3 %>%
-    filter(accepted == 0 & name %in% itis_fin3$accepted_name))
-# 2 species
-
-# how many accepted names are associated with these names and not in the atlas?
-tnrs_fin3 %>%
-  filter(accepted == 0 & name %in% acc_itis_syn_tnrs$name & !(accepted_name %in% itis_fin3$name))
-# 2
-
-# are the accepted names included on their own?
-tnrs_fin3 %>%
-  filter(accepted_name %in% c("Brachiaria eruciformis", "Reynoutria x bohemica"))
-# yes, but don't have any other synonyms
-
-# are the accepted names in the CABI list?
-species %>%
-  filter(Preferred.scientific.name %in% c("Brachiaria eruciformis", "Reynoutria x bohemica"))
-# No
-
-# remove synonyms that should be accepted names (these will be added from Atlas)
-# remove the associated accepted names
-tnrs_fin4 <- tnrs_fin3 %>%
-  filter(!(accepted_name %in% c("Brachiaria eruciformis", "Reynoutria x bohemica")))
-
-
-### Atlas > ITIS > TNRS for naming ###
-
-# remove ITIS names in Atlas
-itis_fin4 <- filter(itis_fin3, !(name %in% atlas_fin$name))
-
-# remove TNRS names in Atlas
-tnrs_fin5 <- filter(tnrs_fin4, !(name %in% atlas_fin$name))
-
-# remove TNRS names in ITIS
-tnrs_fin6 <- filter(tnrs_fin5, !(name %in% itis_fin4$name))
-
-
-### combine datasets ###
-
-# look at each
-atlas_fin
-itis_fin4
-tnrs_fin6
-
+# none 
 
 # combine
-# remove unnecessary columns
-# replace NA's in source column with 0
-syn_fin <- atlas_fin %>%
-  full_join(itis_fin4 %>% select(-atlas_accepted_name)) %>%
-  full_join(tnrs_fin6 %>% select(-c(atlas_accepted_name, itis_accepted_name))) %>%
-  mutate(Atlas = replace_na(Atlas, 0),
-         ITIS = replace_na(ITIS, 0),
-         TNRS = replace_na(TNRS, 0))
+tnrs_cabi <- tnrs_acc %>%
+  full_join(tnrs_syn)
 
-# look at duplicates
-(syn_dup <- syn_fin %>%
-    filter(duplicated(name) == T))
-# none
-
-# make sure all accepted names have their own row
-syn_fin %>%
-  select(accepted_name) %>%
-  unique() %>%
-  rename(name = accepted_name) %>%
-  anti_join(syn_fin %>% select(name))
-# yes, all are in the "name" column
-syn_fin %>%
-  select(accepted_name) %>%
-  unique() %>%
-  nrow
-# 2014 accepted names
-sum(syn_fin$accepted)
-# confirmed
-
-
-#### add any missing CABI species ####
-
-# remove the duplicate species
-# fill in NA rows
-syn_fin2 <- syn_fin %>%
-  full_join(plants %>%
-              select(Preferred.scientific.name) %>%
-              rename(name = Preferred.scientific.name) %>%
-              unique()) %>%
-  mutate(Atlas = replace_na(Atlas, 0),
-         ITIS = replace_na(ITIS, 0),
-         TNRS = replace_na(TNRS, 0),
-         accepted_name = case_when(is.na(accepted_name) ~ name,
-                                   TRUE ~ accepted_name),
-         CABI = case_when(Atlas + ITIS + TNRS == 0 ~ 1,
-                          TRUE ~ 0),
-         accepted = case_when(name == accepted_name ~ 1,
-                              TRUE ~ 0))
+# check for only CABI names
+tnrs_cabi %>%
+  filter(!(name %in% species$Preferred.scientific.name))
 
 # check for duplicates
-(syn_fin_dups <- syn_fin2 %>%
-    filter(duplicated(name) == T))
+tnrs_cabi %>%
+  get_dupes(name)
+# same as above
+
+# check for accepted names
+tnrs_cabi %>%
+  filter(is.na(acc_name))
+
+
+#### resolve accepted names ####
+
+# combine name lists
+# prioritize accepted naming
+# remove duplicate rows
+acc_cabi <- species %>%
+  rename(name = Preferred.scientific.name) %>%
+  full_join(atlas_cabi2 %>%
+              select(-c(X.Plant_ID, accepted)) %>%
+              rename(atlas_acc_name = acc_name)) %>%
+  full_join(itis_cabi %>%
+              select(-accepted) %>%
+              rename(itis_acc_name = acc_name)) %>%
+  full_join(tnrs_cabi %>%
+              select(-accepted) %>%
+              rename(tnrs_acc_name = acc_name)) %>%
+  mutate(acc_name = case_when(!is.na(atlas_acc_name) ~ atlas_acc_name,
+                              is.na(atlas_acc_name) & !is.na(itis_acc_name) ~ itis_acc_name,
+                              is.na(atlas_acc_name) & is.na(itis_acc_name) & !is.na(tnrs_acc_name) ~ tnrs_acc_name,
+                              TRUE ~ name),
+         acc_name_source = case_when(!is.na(atlas_acc_name) ~ "Atlas",
+                                     is.na(atlas_acc_name) & !is.na(itis_acc_name) ~ "ITIS",
+                                     is.na(atlas_acc_name) & is.na(itis_acc_name) & !is.na(tnrs_acc_name) ~ "TNRS",
+                                     TRUE ~ "CABI")) %>%
+  select(name, acc_name, acc_name_source) %>%
+  unique()
+  
+# duplicates
+acc_cabi %>%
+  get_dupes(name)
 # none
+
+# number missing from databases
+acc_cabi %>%
+  filter(acc_name_source == "CABI")
+# 141
+
+# accepted names in lower priority databases may be synonyms in higher priority databases
+(atlas_syn_check <- acc_cabi %>%
+  filter(acc_name_source %in% c("ITIS", "TNRS")) %>%
+  select(acc_name, acc_name_source) %>%
+  unique() %>%
+  rename(name = acc_name) %>%
+  inner_join(atlas_all %>% # whole Atlas, not just CABI matches
+               filter(name != acc_name) %>%
+               select(name, acc_name)) %>%
+    rename(acc_name_Atlas = acc_name,
+           acc_name = name))
+# 5 names
+
+# TNRS names
+(itis_syn_check <- acc_cabi %>%
+    filter(acc_name_source == "TNRS" & 
+             !(acc_name %in% atlas_syn_check$name) & # names resolved above
+             !(acc_name %in% itis_acc$acc_name)) %>% # accepted names matched with other CABI names
+    select(acc_name) %>%
+    unique() %>%
+    rename(name = acc_name) %>%
+    arrange(name))
+# 698 possible
+
+# match with current synonym list?
+itis_syn_check %>%
+  inner_join(itis_syn)
+# none
+
+# get synonyms from ITIS
+# manual entries needed when multiple records found. Decision hierarchy: scientific name must match the name submitted, if not, none of the records were chosen. Chose the records with status "accepted", then chose record with the most information associated with it, then chose the first record listed.
+# itis_syn_out <- synonyms(itis_syn_check$name, db = "itis")
+
+# convert to dataframe
+# remove V1 (added from species with no matches, all NA's)
+# itis_syn_out2 <- rbindlist(lapply(itis_syn_out, as.data.table), 
+#                            use.names = T, fill = T, idcol = "species") %>%
+#   select(-V1)
+
+# save
+# write_csv(itis_syn_out2, "intermediate-data/itis_synonym_check.csv")
+
+# re-import
+itis_syn_out2 <- read_csv("intermediate-data/itis_synonym_check.csv")
+
+# check for synonyms
+# accepted names return 0 rows
+# not found have NA for sub_tsn
+(itis_syn_check2 <- itis_syn_out2 %>%
+    filter(sub_tsn != acc_tsn) %>%
+    mutate(acc_name_ITIS = acc_name,
+           acc_name = species,
+           acc_name_source = "TNRS") %>%
+    select(acc_name, acc_name_source, acc_name_ITIS) %>%
+    unique())
+
+# combine new accepted names
+syn_check <- atlas_syn_check %>%
+  full_join(itis_syn_check2)
+
+acc_cabi %>%
+  inner_join(syn_check)
+
+# update names with higher level accepted name
+acc_cabi2 <- acc_cabi %>%
+  left_join(syn_check) %>%
+  mutate(acc_name = case_when(!is.na(acc_name_Atlas) ~ acc_name_Atlas,
+                              !is.na(acc_name_ITIS) ~ acc_name_ITIS,
+                              TRUE ~ acc_name),
+         Atlas = if_else(acc_name_source == "Atlas" | !is.na(acc_name_Atlas), 1, 0)) %>%
+  select(-c(acc_name_Atlas, acc_name_ITIS))
+
+# names with multiple accepted names
+acc_cabi2 %>%
+  group_by(name) %>%
+  summarize(acc_names = n_distinct(acc_name)) %>%
+  ungroup() %>%
+  filter(acc_names > 1)
+# none
+
+# multiple names grouped together
+acc_cabi2 %>%
+  group_by(acc_name) %>%
+  summarize(names = n_distinct(name)) %>%
+  ungroup() %>%
+  group_by(names) %>%
+  count() %>%
+  ungroup() %>%
+  mutate(names_tot = names * n)
+
+
+#### add synonyms from Atlas and ITIS ####
+
+# Atlas synonyms
+atlas_all
+
+# ITIS synonyms from original import
+itis_orig <- itis_out2 %>% # synonyms associated with accepted names
+  filter(sub_tsn == acc_tsn) %>%
+  select(syn_name, species) %>%
+  rename(acc_name = species) %>%
+  full_join(itis_out2 %>% # accepted names themselves
+              filter(sub_tsn == acc_tsn) %>%
+              select(species) %>%
+              rename(acc_name = species) %>%
+              mutate(syn_name = acc_name)) %>%
+  full_join(itis_out2 %>% # accepted names and their synonyms associated with synonyms
+              filter(sub_tsn != acc_tsn) %>%
+              select(syn_name, acc_name) %>%
+              rename(acc_name = acc_name)) %>%
+  unique() %>%
+  rename(name = syn_name)
+
+# ITIS synonyms from TNRS accepted
+itis_tnrs <- itis_syn_out2 %>% # synonyms associated with accepted names
+  filter(sub_tsn == acc_tsn) %>%
+  select(syn_name, species) %>%
+  rename(acc_name = species) %>%
+  full_join(itis_syn_out2 %>% # accepted names themselves
+              filter(sub_tsn == acc_tsn) %>%
+              select(species) %>%
+              rename(acc_name = species) %>%
+              mutate(syn_name = acc_name)) %>%
+  full_join(itis_syn_out2 %>% # accepted names and their synonyms associated with synonyms
+              filter(sub_tsn != acc_tsn) %>%
+              select(syn_name, acc_name)) %>%
+  unique() %>%
+  rename(name = syn_name)
+
+# combine synonyms
+syn_cabi <- acc_cabi2 %>%
+  select(name, acc_name) %>%
+  full_join(atlas_all %>%
+              select(-c(X.Plant_ID, accepted))) %>%
+  full_join(itis_orig) %>%
+  full_join(itis_tnrs) %>%
+  inner_join(acc_cabi2 %>% # only include accepted names in list
+               select(acc_name) %>%
+               unique()) %>%
+  unique()
+
+# check that all names are included
+n_distinct(acc_cabi2$acc_name)
+n_distinct(syn_cabi$acc_name)
+acc_cabi2 %>%
+  filter(!(name %in% syn_cabi$name))
 
 
 #### add climate data ####
 
 # using the CABI dataset, identify species that are in these regions (removes species that are only on the list because they have a transport pathway to FL)
 plants_climate <- plants %>%
-  rename(climate = "Number.of.presence.records.countries/states.with.matching.climate") %>%
-  filter(climate > 0) 
+  rename(climate = "Number.of.presence.records.countries/states.with.matching.climate",
+         name = "Preferred.scientific.name") %>%
+  select(name, climate) %>%
+  mutate(climate = if_else(climate > 0, 1, 0)) %>%
+  unique()
 
 # number of climate-matching species
-nrow(plants_climate)
-# 1539
+sum(plants_climate$climate)
+# 1538
 
-# indicate names on synonym list with direct association to new CABI list
-syn_fin3 <- syn_fin2 %>%
-  mutate(climate = case_when(name %in% plants_climate$Preferred.scientific.name | accepted_name %in% plants_climate$Preferred.scientific.name ~ 1,
-                                  TRUE ~ 0))
+# indicate names on synonym list with direct association to climate match
+acc_cabi3 <- acc_cabi2 %>%
+  left_join(plants_climate)
 
-# synonyms with association to CABI
-syn_cabi_climate <- syn_fin3 %>%
+# synonyms with climate
+acc_cabi3 %>%
   filter(climate == 1)
 
-# update CABI association if the accepted name has an association to CABI (i.e., one of its synonyms is in the species list, but the accepted name itself is not)
-syn_fin4 <- syn_fin3 %>%
-  mutate(climate = case_when(accepted_name %in% syn_cabi_climate$accepted_name ~ 1,
-                                  TRUE ~ climate)) 
+# missing values
+acc_cabi3 %>%
+  filter(is.na(climate))
 
 
 #### add GLONAF data ####
@@ -841,55 +719,138 @@ nrow(glo_nat)
 # 13,083
 
 # indicate names on synonym list with direct association to GloNAF
-syn_fin5 <- syn_fin4 %>%
-  mutate(naturalized = case_when(name %in% glo_nat$standardized_name | accepted_name %in% glo_nat$standardized_name ~ 1,
+syn_cabi2 <- syn_cabi %>%
+  mutate(naturalized = case_when(name %in% glo_nat$standardized_name | acc_name %in% glo_nat$standardized_name ~ 1,
                                   TRUE ~ 0))
 
 # synonyms with association to GloNAF
-syn_nat <- syn_fin5 %>%
+syn_nat <- syn_cabi2 %>%
   filter(naturalized == 1)
 
 # update CABI association if the accepted name has an association to GloNAF list (i.e., one of its synonyms is in the species list, but the accepted name itself is not)
-syn_fin6 <- syn_fin5 %>%
-  mutate(naturalized = case_when(accepted_name %in% syn_nat$accepted_name ~ 1,
+syn_cabi3 <- syn_cabi2 %>%
+  mutate(naturalized = case_when(acc_name %in% syn_nat$acc_name ~ 1,
                                   TRUE ~ naturalized)) 
+
+
+#### add GCW data ####
+
+# import data
+gcw <- read.csv("intermediate-data/GCW_full_list_020420_trimspace.csv") 
+
+# number of species
+nrow(gcw) 
+# 24,601
+
+# indicate names on synonym list with direct association to GCW
+syn_cabi4 <- syn_cabi3 %>%
+  mutate(weedy = case_when(name %in% gcw$species | acc_name %in% gcw$species ~ 1,
+                                 TRUE ~ 0))
+
+# synonyms with association to GCW
+syn_weed <- syn_cabi4 %>%
+  filter(weedy == 1)
+
+# update CABI association if the accepted name has an association to GCW list (i.e., one of its synonyms is in the species list, but the accepted name itself is not)
+syn_cabi5 <- syn_cabi4 %>%
+  mutate(weedy = case_when(acc_name %in% syn_weed$acc_name ~ 1,
+                                 TRUE ~ weedy)) 
+
+
+#### add noxious weed lists ####
+
+# import data 
+fed_nox <- read_csv("intermediate-data/federal_noxious_weed_list.csv")
+fl_nox <- read_csv("intermediate-data/fl_prohibited_plants.csv")
+
+# edit Federal list to remove author names
+fed_nox2 <- fed_nox %>%
+  mutate(genus = word(name, 1),
+         species = word(name, 2))
+
+fed_nox2_genus = fed_nox2 %>%
+  filter(species == "spp.")
+
+# indicate names on synonym list with direct association to Fed list
+syn_cabi6 <- syn_cabi5 %>%
+  mutate(name_genus = word(name, 1),
+         acc_genus = word(acc_name, 1),
+         fed_nox = case_when(name %in% fed_nox2$name ~ 1,
+                             acc_name %in% fed_nox2$name ~ 1,
+                             name_genus %in% fed_nox2_genus$name ~ 1,
+                             acc_genus %in% fed_nox2_genus$name ~ 1,
+                             TRUE ~ 0))
+
+# synonyms with association to Fed list
+syn_fed_nox <- syn_cabi6 %>%
+  filter(fed_nox == 1)
+
+# update CABI association if the accepted name has an association to Fed list (i.e., one of its synonyms is in the species list, but the accepted name itself is not)
+syn_cabi7 <- syn_cabi6 %>%
+  mutate(fed_nox = case_when(acc_name %in% syn_fed_nox$acc_name ~ 1,
+                           TRUE ~ fed_nox)) 
+
+# create name in FL list
+# leave listed and exception - neither of these should be on our list
+fl_nox2 <- fl_nox %>%
+  mutate(name = case_when(species == "spp." ~ genus,
+                          !is.na(subspecies) ~ paste(genus, species, subspecies, sep = " "),
+                          species != "spp." & is.na(subspecies) ~ paste(genus, species, sep = " ")))
+
+fl_nox2_genus <- fl_nox2 %>%
+  filter(species == "spp.")
+
+# indicate names on synonym list with direct association to FL list
+syn_cabi8 <- syn_cabi7 %>%
+  mutate(fl_nox = case_when(name %in% fl_nox2$name ~ 1,
+                             acc_name %in% fl_nox2$name ~ 1,
+                             name_genus %in% fl_nox2_genus$name ~ 1,
+                             acc_genus %in% fl_nox2_genus$name ~ 1,
+                             TRUE ~ 0))
+
+# synonyms with association to FL list
+syn_fl_nox <- syn_cabi8 %>%
+  filter(fl_nox == 1)
+
+# update CABI association if the accepted name has an association to FL list (i.e., one of its synonyms is in the species list, but the accepted name itself is not)
+# remove the genus columns
+syn_cabi9 <- syn_cabi8 %>%
+  mutate(fl_nox = case_when(acc_name %in% syn_fl_nox$acc_name ~ 1,
+                             TRUE ~ fl_nox)) %>%
+  select(-c(name_genus, acc_genus))
 
 
 #### add GBIF data ####
 
-# # test names 
-# test_names <- unique(syn_fin6$accepted_name)[1:20]
-# # 8 is a subspecies
-
 # match the names 
-# gbif_matches <- syn_fin6$name %>%
+# gbif_matches <- syn_cabi9$name %>%
 #   taxize::get_gbifid_(method="backbone", messages = F) %>% # match names to the GBIF backbone to get taxonkeys
 #   imap(~ .x %>% mutate(original_sciname = .y)) %>% # add original name back into data.frame
 #   bind_rows() # combine all data.frames into one
-# 
-# write_csv(gbif_matches, "intermediate-data/gbif_taxonkeys_full_cabi_list_062221.csv")
-gbif_matches <- read_csv("intermediate-data/gbif_taxonkeys_full_cabi_list_062221.csv")
-
-# # look at subspecies
-# gbif_matches %>%
-#   filter(original_sciname == test_names[8])
-# # neither is an exact and accepted match
-# # our accepted names don't match GBIF's
-# # this is the accepted name and it has far fewer occurrences: Centaurea stoebe subsp. australis
-# syn_fin6 %>%
-#   filter(accepted_name == test_names[8])
+ 
+# write_csv(gbif_matches, "intermediate-data/gbif_taxonkeys_full_cabi_list_010622.csv")
+gbif_matches <- read_csv("intermediate-data/gbif_taxonkeys_full_cabi_list_010622.csv")
 
 # kingdoms
 unique(gbif_matches$kingdom)
+
+# unexpected kingdoms
+gbif_matches %>%
+  filter(kingdom != "Plantae") %>%
+  select(original_sciname, matchtype, kingdom) %>%
+  unique() %>%
+  group_by(kingdom, matchtype) %>%
+  count()
+# most will be removed with fuzzy matches
 
 # filter for exact matches
 gbif_matches2 <- gbif_matches %>%
   as_tibble() %>%
   filter(kingdom != "Animalia") %>%
-  left_join(syn_fin6 %>%
-              select(name, accepted_name) %>%
+  left_join(syn_cabi9 %>%
+              select(name, acc_name) %>%
               rename(original_sciname = name,
-                     original_accepted = accepted_name)) %>%
+                     original_accepted = acc_name)) %>%
   group_by(original_sciname) %>%
   mutate(acc_matches = sum(status == "ACCEPTED"),
          ext_matches = sum(matchtype == "EXACT"),
@@ -904,17 +865,13 @@ gbif_matches2 <- gbif_matches %>%
   ungroup()
 
 # save for later searches
-write_csv(gbif_matches2, "intermediate-data/gbif_taxonkeys_full_cabi_list_cleaned_062221.csv")
+write_csv(gbif_matches2, "intermediate-data/gbif_taxonkeys_full_cabi_list_cleaned_010622.csv")
 
 # kingdoms
 unique(gbif_matches2$kingdom)
-# filter(gbif_matches2, kingdom == "Animalia") %>%
-#   select(canonicalname, original_sciname)
-# filter(gbif_matches2, original_sciname == "Bougainvillea rugosa") %>%
-#   select(scientificname, original_accepted)
-# filter(gbif_matches2, original_accepted == "Bougainvillea rugosa") # plant species that's not on GBIF and doesn't have synonyms
 filter(gbif_matches2, kingdom == "Chromista") %>%
-  select(canonicalname, original_sciname) # all are seaweeds
+  select(canonicalname, original_sciname) 
+# all six are aquatic
 
 # multiple matches
 gbif_matches2 %>%
@@ -923,11 +880,26 @@ gbif_matches2 %>%
 # use the higher occurrence values for these
 
 # non-matches
-anti_join(syn_fin6 %>% rename(original_sciname = name), gbif_matches2) # 9 non-matches, some are synonyms
+anti_join(syn_cabi9 %>% rename(original_sciname = name), gbif_matches2) 
+# 8 non-matches, two are accepted names
+
+# investigate unmatched accepted names
+acc_cabi3 %>%
+  filter(name %in% c("Bougainvillea rugosa", "Juncus kraussii x acutus"))
+# the hybrid doesn't seem to be an official name
+# Bougainvillea rugosa isn't a plant: http://www.marinespecies.org/aphia.php?p=taxdetails&id=117332
+
+filter(acc_cabi3, str_detect(name, "Juncus") == T)
+# Junucs acutus is included, which seems to be the invasive species hybridizing with J. kraussi in Australia
+# https://www.dpaw.wa.gov.au/images/documents/conservation-management/off-road-conservation/urban-nature/workshops/proceedings_of_the_managing_sharp_rush_juncus_acutus_works.pdf
+
+syn_cabi9 %>%
+  filter(acc_name %in% c("Bougainvillea rugosa", "Juncus kraussii x acutus"))
+# no synonyms associated with these and they're not naturalized or weedy
 
 # extract usage key
 gbif_taxon_keys <- gbif_matches2 %>% 
-  pull(usagekey) # get the gbif taxonkeys
+  pull(usagekey)
 
 # download gbif data
 # (gbif_dwld <- occ_download(pred_in("taxonKey", gbif_taxon_keys),
@@ -936,21 +908,20 @@ gbif_taxon_keys <- gbif_matches2 %>%
 #              pred_lte("year", 2019), # backtrack to date that original data were extracted (2020-01-09)
 #              format = "SPECIES_LIST", # summary data, not every occurrence
 #              user = "aekendig",
-#              pwd = "cf8sUKAJd8CUaV",
+#              pwd = key_get("gbif", "aekendig"),
 #              email = "aekendig@gmail.com"))
 # tried to use exact date with pred_lte("eventDate", 2020-01-09),
 # but only records before 2010 were returned
 # taxon key returns all synonyms, which we don't want
 # https://www.gbif.org/developer/occurrence#predicates
 # remove records without exact matches to taxonkey upon import
-# sent above 6/24/21 at 8:23 AM
 
 # check status
 # occ_download_meta(gbif_dwld)
 
 # overview of downloads
 # gbif_downloads <- occ_download_list(user = "aekendig",
-#                                     pwd = "cf8sUKAJd8CUaV")
+#                                     pwd = key_get("gbif", "aekendig"))
 # gbif_download_results <- tibble::as_tibble(gbif_downloads$results)
 
 # import download
@@ -958,32 +929,64 @@ gbif_taxon_keys <- gbif_matches2 %>%
 # the parsing of the csv (which is actually tab-delimited) in Excel can mess up the data
 # open with TextEdit and save as a .txt file
 # open .txt file in Excel (should parse correctly) and resave as a .csv with name below
-gbif_output <- read_csv("intermediate-data/gbif_download_full_cabi_list_062421.csv")
+gbif_output <- read_csv("intermediate-data/gbif_download_full_cabi_list_010622.csv")
+
+# duplicates per taxon key
+(gbif_key_dups <- get_dupes(gbif_output, taxonKey)) 
+
+gbif_key_dups %>%
+  select(taxonRank) %>%
+  unique()
+# all are genera, use max value
+
+gbif_key_dups2 <- gbif_key_dups %>%
+  group_by(taxonKey) %>%
+  summarize(numberOfOccurrences = max(numberOfOccurrences)) %>%
+  ungroup()
 
 # clean dataset
 gbif_output2 <- gbif_output %>%
+  filter(!(taxonKey %in% gbif_key_dups2)) %>%
+  select(taxonKey, numberOfOccurrences) %>%
+  full_join(gbif_key_dups2) %>%
   rename(occurrences_new = numberOfOccurrences) %>%
   inner_join(gbif_matches2 %>%  # select exact matches to taxonKeys
-              select(usagekey, original_sciname) %>% # add original name
-              rename(taxonKey = usagekey,
-                     name = original_sciname))
+               select(usagekey, original_sciname) %>% # add original name
+               rename(taxonKey = usagekey,
+                      name = original_sciname))
 
 # missing
 gbif_matches2 %>%  # select exact matches to taxonKeys
   select(usagekey, original_sciname) %>% # add original name
   rename(taxonKey = usagekey,
          name = original_sciname) %>%
-  anti_join(gbif_output)
-# 5683 missing data
+  anti_join(gbif_output2)
+# 8178 missing data
 # first 10 have no occurrences or all occurrences have geospatial issues
+
+# duplicates
+(gbif_name_dups <- gbif_output2 %>%
+  get_dupes(name))
+# 1274
+# these are different authorities
+
+# add together duplicate names
+gbif_output3 <- gbif_output2 %>%
+  group_by(name) %>%
+  summarize(occurrences_new = sum(occurrences_new)) %>%
+  ungroup()
+
+# save
+write_csv(gbif_output3, "intermediate-data/gbif_cleaned_full_cabi_list_010622.csv")
 
 # original method starts here: 
 # code below used to select 100 species for rapid risk assessment
+# it was also done with different (more convoluted) taxonomic resolution methods
 # this method doesn't save the data or create a DOI
 # we repeated the data extraction above while writing manuscript to obtain a DOI
 
 # search all synonyms
-# gbif <- occ_search(scientificName = syn_fin6$name,
+# gbif <- occ_search(scientificName = syn_cabi9$name,
 #            limit = 0,
 #            hasCoordinate = T,
 #            hasGeospatialIssue = F,
@@ -1003,212 +1006,130 @@ gbif_matches2 %>%  # select exact matches to taxonKeys
 gbif <- read_csv("intermediate-data/cabi_full_list_plants_occurrences.csv")
 
 # add data to synonym dataset
-syn_fin7 <- syn_fin6 %>%
+syn_cabi10 <- syn_cabi9 %>%
   left_join(gbif) %>%
-  left_join(gbif_output2 %>%
+  left_join(gbif_output3 %>%
               select(name, occurrences_new)) %>%
   mutate(occurrences_new = replace_na(occurrences_new, 0))
 
+# missing occurrences because of change in taxonomic resolution methods?
+syn_cabi10 %>%
+  filter(is.na(occurrences)) %>%
+  ggplot(aes(x = occurrences_new)) +
+  geom_histogram()
+# 2191 names, most have zero occurrences
+
+syn_cabi10 %>%
+  filter(is.na(occurrences) & occurrences_new > 100) %>%
+  select(acc_name) %>%
+  n_distinct()
+# 183 accepted names
+
 # compare original method (occurrences) with DOI method (occurrences_new)
-syn_fin7 %>%
+syn_cabi10 %>%
   ggplot(aes(occurrences, occurrences_new)) +
   geom_point() +
-  geom_abline(intercept = 0, slope = 1) +
-  geom_smooth(formula = y ~ x, method = "lm")
-
-filter(syn_fin7, is.na(occurrences)) # 0
-
-
-#### add GCW data ####
-
-# import data
-gcw <- read.csv("intermediate-data/GCW_full_list_020420_trimspace.csv") 
-
-# number of species
-nrow(gcw) 
-# 24,601
-
-# indicate names on synonym list with direct association to GCW
-syn_fin8 <- syn_fin7 %>%
-  mutate(weedy = case_when(name %in% gcw$species | accepted_name %in% gcw$species ~ 1,
-                                 TRUE ~ 0))
-
-# synonyms with association to GCW
-syn_weed <- syn_fin8 %>%
-  filter(weedy == 1)
-
-# update CABI association if the accepted name has an association to GCW list (i.e., one of its synonyms is in the species list, but the accepted name itself is not)
-syn_fin9 <- syn_fin8 %>%
-  mutate(weedy = case_when(accepted_name %in% syn_weed$accepted_name ~ 1,
-                                 TRUE ~ weedy)) 
+  geom_abline(intercept = 0, slope = 1)
+# most are close, some have way more occurrences_new
+# occurrences_new may be less strict than occurrences
 
 
-#### add noxious weed lists ####
+#### summarize by accepted name ####
 
-# import data 
-fed_nox <- read_csv("intermediate-data/federal_noxious_weed_list.csv")
-fl_nox <- read_csv("intermediate-data/fl_prohibited_plants.csv")
+# check for missing values
+syn_cabi10[!complete.cases(syn_cabi10),] %>%
+  select(naturalized, weedy, fed_nox, fl_nox, occurrences) %>%
+  unique()
+# some occurrences missing
 
-# edit Federal list to remove author names
-fed_nox2 <- fed_nox %>%
-  mutate(genus = word(name, 1),
-         species = word(name, 2))
-
-fed_nox2_genus = fed_nox2 %>%
-  filter(species == "spp.")
-
-# indicate names on synonym list with direct association to Fed list
-syn_fin10 <- syn_fin9 %>%
-  mutate(name_genus = word(name, 1),
-         accepted_genus = word(accepted_name, 1),
-         fed_nox = case_when(name %in% fed_nox2$name ~ 1,
-                             accepted_name %in% fed_nox2$name ~ 1,
-                             name_genus %in% fed_nox2_genus$name ~ 1,
-                             accepted_genus %in% fed_nox2_genus$name ~ 1,
-                             TRUE ~ 0))
-
-# synonyms with association to Fed list
-syn_fed_nox <- syn_fin10 %>%
-  filter(fed_nox == 1)
-
-# update CABI association if the accepted name has an association to Fed list (i.e., one of its synonyms is in the species list, but the accepted name itself is not)
-syn_fin11 <- syn_fin10 %>%
-  mutate(fed_nox = case_when(accepted_name %in% syn_fed_nox$accepted_name ~ 1,
-                           TRUE ~ fed_nox)) 
-
-# create name in FL list
-# leave listed and exception - neither of these should be on our list
-fl_nox2 <- fl_nox %>%
-  mutate(name = case_when(species == "spp." ~ genus,
-                          !is.na(subspecies) ~ paste(genus, species, subspecies, sep = " "),
-                          species != "spp." & is.na(subspecies) ~ paste(genus, species, sep = " ")))
-
-fl_nox2_genus = fl_nox2 %>%
-  filter(species == "spp.")
-
-# indicate names on synonym list with direct association to FL list
-syn_fin12 <- syn_fin11 %>%
-  mutate(fl_nox = case_when(name %in% fl_nox2$name ~ 1,
-                             accepted_name %in% fl_nox2$name ~ 1,
-                             name_genus %in% fl_nox2_genus$name ~ 1,
-                             accepted_genus %in% fl_nox2_genus$name ~ 1,
-                             TRUE ~ 0))
-
-# synonyms with association to FL list
-syn_fl_nox <- syn_fin12 %>%
-  filter(fl_nox == 1)
-
-# update CABI association if the accepted name has an association to FL list (i.e., one of its synonyms is in the species list, but the accepted name itself is not)
-# remove the genus columns
-syn_fin13 <- syn_fin12 %>%
-  mutate(fl_nox = case_when(accepted_name %in% syn_fl_nox$accepted_name ~ 1,
-                             TRUE ~ fl_nox)) %>%
-  select(-c(name_genus, accepted_genus))
-
-# number on lists
-sum(syn_fin13$fed_nox)
-sum(syn_fin13$fl_nox)
-
-
-#### check final dataset ####
-
-# number of accepted species
-length(unique(syn_fin13$accepted_name)) # 2360
-
-# number in original list
-syn_plant <- filter(syn_fin13, name %in% plants$Preferred.scientific.name)
-length(unique(syn_plant$accepted_name)) # 2071
-
-# look at new names added to list
-syn_new <- filter(syn_fin13, !(accepted_name %in% syn_plant$accepted_name))
-length(unique(syn_new$accepted_name)) # 289
-# checked against final list and none are included 
-
-
-#### summarize data by accepted species name ####
-
-# check NA's
-sum(is.na(syn_fin13$accepted_name))
-sum(is.na(syn_fin13$climate))
-sum(is.na(syn_fin13$naturalized))
-sum(is.na(syn_fin13$occurrences))
-sum(is.na(syn_fin13$weedy))
-sum(is.na(syn_fin13$fed_nox))
-sum(is.na(syn_fin13$fl_nox))
+# save
+write_csv(syn_cabi10, "intermediate-data/horizon_scan_all_names_plant_list_010622")
 
 # summarize
-acc_fin <- syn_fin13 %>%
-  group_by(accepted_name) %>%
+acc_fin <- syn_cabi10 %>%
+  group_by(acc_name) %>%
   summarize(synonyms = paste(name, collapse = ", "),
-            climate = as.numeric(sum(climate) > 0),
             naturalized = as.numeric(sum(naturalized) > 0),
-            Atlas = as.numeric(sum(Atlas) > 0),
-            occurrences = sum(occurrences), # note that this potentially combines different varieties
-            occurrences_new = sum(occurrences_new),
             weedy = as.numeric(sum(weedy) > 0),
             fed_nox = as.numeric(sum(fed_nox) > 0),
-            fl_nox = as.numeric(sum(fl_nox) > 0))
-# 2360 species
+            fl_nox = as.numeric(sum(fl_nox) > 0),
+            occurrences = sum(occurrences, na.rm = T), # note that this potentially combines different varieties
+            occurrences_new = sum(occurrences_new, na.rm = T)) %>% 
+  full_join(acc_cabi3 %>%
+              group_by(acc_name) %>%
+              summarize(Atlas = as.numeric(sum(Atlas) > 0),
+                        climate = as.numeric(sum(climate) > 0)))
+# 2071 taxa
+
+# check for missing values
+acc_fin[!complete.cases(acc_fin),] %>%
+  select(naturalized, weedy, fed_nox, fl_nox, occurrences, Atlas, climate) %>%
+  unique()
+# none
 
 
 #### trim 1: species that occur in regions with climates similar to FL ####
 
 acc_trim1 <- acc_fin %>%
   filter(climate == 1)
-# 1504 species
+# 1503 species
 
 
 #### trim 2: species that are not in the FL Atlas ####
 
 acc_trim2 <- acc_trim1 %>%
   filter(Atlas == 0)
-# 1307 species
+# 1305 species
 
 
 #### trim 3: species not on a noxious weed list ####
 
 acc_trim3 <- acc_trim2 %>%
   filter(fed_nox == 0 & fl_nox == 0)
-# 1250 species
+# 1244 species
 
 
 #### trim 4: species that are known to be naturalized outside of their native range ####
 
 acc_trim4 <- acc_trim3 %>%
   filter(naturalized == 1)
-# 912 species
+# 929 species
 
 
 #### trim 5: species that are in the literature for being weedy ####
 
 acc_trim5 <- acc_trim4 %>%
   filter(weedy == 1)
-# 808 species
+# 832 species
 
 
 #### trim 6: expert opinion - remove genus-only and already assessed (John Kunzer) ####
 
 # import John's notes on the previously exported list
 jk <- read_csv("intermediate-data/trimmed_list_all_occurrences_20200225_JK.csv") %>%
-  select(accepted_name, jk_notes)
+  select(accepted_name, jk_notes) %>%
+  rename(acc_name = accepted_name)
 
 # remove the relevant species
 acc_trim6 <- acc_trim5 %>%
-  mutate(words = str_count(accepted_name, "\\w+")) %>%
-  filter(words > 1) %>%
+  mutate(words = str_count(acc_name, "\\w+")) %>%
+  filter(words > 1) %>% # remove genus only (too broad)
   left_join(jk) %>%
   filter(is.na(jk_notes) | jk_notes != "Removal recommended, based on prior workup by JK. This species (cultivated parsnip) is a temperate-obligate biennial; widely cultivated and has demonstrated minimal capacity to escape cultivation in our climate (one record from LA & one from SC)")
-# 806 species
+# 830 species
 
 
 #### trim 7: sort by commonness ####
 
 acc_trim7 <- acc_trim6 %>%
   arrange(desc(occurrences)) %>%
-  mutate(synonyms = case_when(synonyms == accepted_name ~ "",
+  mutate(synonyms = case_when(synonyms == acc_name ~ "",
                               TRUE ~ synonyms),
          jk_notes = replace_na(jk_notes, "")) %>%
-  select(accepted_name, synonyms, occurrences, jk_notes)
+  select(acc_name, synonyms, occurrences, jk_notes)
+
+# save
+write_csv(acc_trim7[1:100,], "intermediate-data/horizon_scan_100_plant_list_010622.csv")
 
 
 #### assign assessors and reviewers ####
@@ -1271,23 +1192,23 @@ occurrences_new_100 <- acc_trim6 %>%
 
 # compare datasets
 occurrences_100 %>%
-  select(accepted_name, occurrences) %>%
+  select(acc_name, occurrences) %>%
   inner_join(occurrences_new_100 %>%
-              select(accepted_name, occurrences_new))
-# 90 overlapping species
+              select(acc_name, occurrences_new))
+# 89 overlapping species
 
 occurrences_100 %>%
-  select(accepted_name, occurrences) %>%
+  select(acc_name, occurrences) %>%
   anti_join(occurrences_new_100 %>%
-               select(accepted_name, occurrences_new)) %>%
+               select(acc_name, occurrences_new)) %>%
   left_join(acc_trim6 %>%
-              select(accepted_name, occurrences_new))
-# 10 species in evaluated list have relatively high new occurrences
+              select(acc_name, occurrences_new))
+# 11 species in evaluated list have relatively high new occurrences
 
 occurrences_new_100 %>%
-  select(accepted_name, occurrences_new) %>%
+  select(acc_name, occurrences_new) %>%
   anti_join(occurrences_100 %>%
-              select(accepted_name, occurrences)) %>%
+              select(acc_name, occurrences)) %>%
   left_join(acc_trim6 %>%
-              select(accepted_name, occurrences))
-# 10 species not evaluated have very similar estimates to occurrences besides one
+              select(acc_name, occurrences))
+# 11 species not evaluated have very similar estimates to occurrences besides two
