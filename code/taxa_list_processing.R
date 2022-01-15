@@ -635,10 +635,13 @@ itis_orig <- itis_out2 %>% # synonyms associated with accepted names
               select(species) %>%
               rename(acc_name = species) %>%
               mutate(syn_name = acc_name)) %>%
-  full_join(itis_out2 %>% # accepted names and their synonyms associated with synonyms
+  full_join(itis_out2 %>% # synonyms associated with synonyms
               filter(sub_tsn != acc_tsn) %>%
-              select(syn_name, acc_name) %>%
-              rename(acc_name = acc_name)) %>%
+              select(syn_name, acc_name)) %>%
+  full_join(itis_out2 %>% # accepted names for submitted synonyms
+              filter(sub_tsn != acc_tsn) %>%
+              select(acc_name) %>%
+              mutate(syn_name = acc_name)) %>%
   unique() %>%
   rename(name = syn_name)
 
@@ -652,29 +655,48 @@ itis_tnrs <- itis_syn_out2 %>% # synonyms associated with accepted names
               select(species) %>%
               rename(acc_name = species) %>%
               mutate(syn_name = acc_name)) %>%
-  full_join(itis_syn_out2 %>% # accepted names and their synonyms associated with synonyms
+  full_join(itis_syn_out2 %>% # synonyms associated with synonyms
               filter(sub_tsn != acc_tsn) %>%
               select(syn_name, acc_name)) %>%
+  full_join(itis_syn_out2 %>% # accepted names for submitted synonyms
+              filter(sub_tsn != acc_tsn) %>%
+              select(acc_name) %>%
+              mutate(syn_name = acc_name)) %>%
   unique() %>%
   rename(name = syn_name)
 
 # combine synonyms
-syn_cabi <- acc_cabi2 %>%
-  select(name, acc_name) %>%
+syn_cabi_source <- acc_cabi2 %>%
+  select(name, acc_name, acc_name_source) %>%
+  full_join(acc_cabi2 %>% # put accepted names in name column if not already
+              select(acc_name, acc_name_source) %>%
+              mutate(name = acc_name)) %>%
   full_join(atlas_all %>%
-              select(-c(X.Plant_ID, accepted))) %>%
-  full_join(itis_orig) %>%
-  full_join(itis_tnrs) %>%
+              select(-c(X.Plant_ID, accepted)) %>%
+              mutate(acc_name_source = "Atlas")) %>%
+  full_join(itis_orig %>%
+              mutate(acc_name_source = "ITIS")) %>%
+  full_join(itis_tnrs %>%
+              mutate(acc_name_source = "ITIS")) %>%
   inner_join(acc_cabi2 %>% # only include accepted names in list
                select(acc_name) %>%
                unique()) %>%
   unique()
+
+# remove source in case of duplication
+syn_cabi <- syn_cabi_source %>%
+  group_by(name, acc_name) %>%
+  summarize(acc_name_source = paste(unique(acc_name_source), collapse = ", ")) %>%
+  ungroup()
+# there are duplicates
 
 # check that all names are included
 n_distinct(acc_cabi2$acc_name)
 n_distinct(syn_cabi$acc_name)
 acc_cabi2 %>%
   filter(!(name %in% syn_cabi$name))
+syn_cabi %>%
+  filter(!(acc_name %in% syn_cabi$acc_name))
 
 
 #### add climate data ####
@@ -828,8 +850,8 @@ syn_cabi9 <- syn_cabi8 %>%
 #   imap(~ .x %>% mutate(original_sciname = .y)) %>% # add original name back into data.frame
 #   bind_rows() # combine all data.frames into one
  
-# write_csv(gbif_matches, "intermediate-data/gbif_taxonkeys_full_cabi_list_010622.csv")
-gbif_matches <- read_csv("intermediate-data/gbif_taxonkeys_full_cabi_list_010622.csv")
+# write_csv(gbif_matches, "intermediate-data/gbif_taxonkeys_full_cabi_list_011522.csv")
+gbif_matches <- read_csv("intermediate-data/gbif_taxonkeys_full_cabi_list_011522.csv")
 
 # kingdoms
 unique(gbif_matches$kingdom)
@@ -865,7 +887,7 @@ gbif_matches2 <- gbif_matches %>%
   ungroup()
 
 # save for later searches
-write_csv(gbif_matches2, "intermediate-data/gbif_taxonkeys_full_cabi_list_cleaned_010622.csv")
+write_csv(gbif_matches2, "intermediate-data/gbif_taxonkeys_full_cabi_list_cleaned_011522.csv")
 
 # kingdoms
 unique(gbif_matches2$kingdom)
@@ -881,21 +903,7 @@ gbif_matches2 %>%
 
 # non-matches
 anti_join(syn_cabi9 %>% rename(original_sciname = name), gbif_matches2) 
-# 8 non-matches, two are accepted names
-
-# investigate unmatched accepted names
-acc_cabi3 %>%
-  filter(name %in% c("Bougainvillea rugosa", "Juncus kraussii x acutus"))
-# the hybrid doesn't seem to be an official name
-# Bougainvillea rugosa isn't a plant: http://www.marinespecies.org/aphia.php?p=taxdetails&id=117332
-
-filter(acc_cabi3, str_detect(name, "Juncus") == T)
-# Junucs acutus is included, which seems to be the invasive species hybridizing with J. kraussi in Australia
-# https://www.dpaw.wa.gov.au/images/documents/conservation-management/off-road-conservation/urban-nature/workshops/proceedings_of_the_managing_sharp_rush_juncus_acutus_works.pdf
-
-syn_cabi9 %>%
-  filter(acc_name %in% c("Bougainvillea rugosa", "Juncus kraussii x acutus"))
-# no synonyms associated with these and they're not naturalized or weedy
+# 10 non-matches, four are accepted names, none of the four will be in the final list
 
 # extract usage key
 gbif_taxon_keys <- gbif_matches2 %>% 
@@ -929,7 +937,7 @@ gbif_taxon_keys <- gbif_matches2 %>%
 # the parsing of the csv (which is actually tab-delimited) in Excel can mess up the data
 # open with TextEdit and save as a .txt file
 # open .txt file in Excel (should parse correctly) and resave as a .csv with name below
-gbif_output <- read_csv("intermediate-data/gbif_download_full_cabi_list_010622.csv")
+gbif_output <- read_csv("intermediate-data/gbif_download_full_cabi_list_011522.csv")
 
 # duplicates per taxon key
 (gbif_key_dups <- get_dupes(gbif_output, taxonKey)) 
@@ -937,7 +945,7 @@ gbif_output <- read_csv("intermediate-data/gbif_download_full_cabi_list_010622.c
 gbif_key_dups %>%
   select(taxonRank) %>%
   unique()
-# all are genera, use max value
+# all are genera, use max value, won't be included in final list
 
 gbif_key_dups2 <- gbif_key_dups %>%
   group_by(taxonKey) %>%
@@ -961,13 +969,13 @@ gbif_matches2 %>%  # select exact matches to taxonKeys
   rename(taxonKey = usagekey,
          name = original_sciname) %>%
   anti_join(gbif_output2)
-# 8178 missing data
-# first 10 have no occurrences or all occurrences have geospatial issues
+# 8216 missing data
+# checked 10: have no occurrences or all occurrences have geospatial issues
 
 # duplicates
 (gbif_name_dups <- gbif_output2 %>%
   get_dupes(name))
-# 1274
+# 1299
 # these are different authorities
 
 # add together duplicate names
@@ -977,7 +985,7 @@ gbif_output3 <- gbif_output2 %>%
   ungroup()
 
 # save
-write_csv(gbif_output3, "intermediate-data/gbif_cleaned_full_cabi_list_010622.csv")
+write_csv(gbif_output3, "intermediate-data/gbif_cleaned_full_cabi_list_011522.csv")
 
 # original method starts here: 
 # code below used to select 100 species for rapid risk assessment
@@ -1017,13 +1025,13 @@ syn_cabi10 %>%
   filter(is.na(occurrences)) %>%
   ggplot(aes(x = occurrences_new)) +
   geom_histogram()
-# 2191 names, most have zero occurrences
+# 2215 names, most have zero occurrences
 
 syn_cabi10 %>%
   filter(is.na(occurrences) & occurrences_new > 100) %>%
   select(acc_name) %>%
   n_distinct()
-# 183 accepted names
+# 191 accepted names
 
 # compare original method (occurrences) with DOI method (occurrences_new)
 syn_cabi10 %>%
@@ -1043,7 +1051,7 @@ syn_cabi10[!complete.cases(syn_cabi10),] %>%
 # some occurrences missing
 
 # save
-write_csv(syn_cabi10, "intermediate-data/horizon_scan_all_names_plant_list_010622")
+write_csv(syn_cabi10, "intermediate-data/horizon_scan_all_names_plant_list_011522")
 
 # summarize
 acc_fin <- syn_cabi10 %>%
@@ -1058,8 +1066,11 @@ acc_fin <- syn_cabi10 %>%
   full_join(acc_cabi3 %>%
               group_by(acc_name) %>%
               summarize(Atlas = as.numeric(sum(Atlas) > 0),
-                        climate = as.numeric(sum(climate) > 0)))
+                        climate = as.numeric(sum(climate) > 0),
+                        acc_name_source = paste(unique(acc_name_source), collapse = ", ")) %>%
+              ungroup())
 # 2071 taxa
+write_csv(acc_fin, "intermediate-data/horizon_scan_accepted_names_plant_list_011522")
 
 # check for missing values
 acc_fin[!complete.cases(acc_fin),] %>%
@@ -1121,15 +1132,20 @@ acc_trim6 <- acc_trim5 %>%
 
 #### trim 7: sort by commonness ####
 
+# any missing occurrences?
+acc_trim7 %>%
+  filter(is.na(occurrences))
+# no
+
+# use original occurrences numbers
 acc_trim7 <- acc_trim6 %>%
   arrange(desc(occurrences)) %>%
   mutate(synonyms = case_when(synonyms == acc_name ~ "",
                               TRUE ~ synonyms),
-         jk_notes = replace_na(jk_notes, "")) %>%
-  select(acc_name, synonyms, occurrences, jk_notes)
+         jk_notes = replace_na(jk_notes, ""))
 
 # save
-write_csv(acc_trim7[1:100,], "intermediate-data/horizon_scan_100_plant_list_010622.csv")
+write_csv(acc_trim7[1:100,], "intermediate-data/horizon_scan_100_plant_list_011522.csv")
 
 
 #### assign assessors and reviewers ####
@@ -1195,7 +1211,7 @@ occurrences_100 %>%
   select(acc_name, occurrences) %>%
   inner_join(occurrences_new_100 %>%
               select(acc_name, occurrences_new))
-# 89 overlapping species
+# 90 overlapping species
 
 occurrences_100 %>%
   select(acc_name, occurrences) %>%
@@ -1203,7 +1219,7 @@ occurrences_100 %>%
                select(acc_name, occurrences_new)) %>%
   left_join(acc_trim6 %>%
               select(acc_name, occurrences_new))
-# 11 species in evaluated list have relatively high new occurrences
+# 10 species in evaluated list not included in new list have relatively high new occurrences
 
 occurrences_new_100 %>%
   select(acc_name, occurrences_new) %>%
@@ -1211,4 +1227,4 @@ occurrences_new_100 %>%
               select(acc_name, occurrences)) %>%
   left_join(acc_trim6 %>%
               select(acc_name, occurrences))
-# 11 species not evaluated have very similar estimates to occurrences besides two
+# 10 species not evaluated have very similar estimates to occurrences besides one
