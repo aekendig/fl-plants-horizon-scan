@@ -164,12 +164,23 @@ mod2 <- update(mod1, .~. - Terrestrial)
 anova(mod1, mod2)
 # okay to remove terrestrial
 
+mod_summ <- tibble(Variable = "habitat (terrestrial vs. aquatic)",
+                   ChiSq = anova(mod1, mod2)[2, "LR stat."],
+                   df = anova(mod1, mod2)[2, "   df"],
+                   P = anova(mod1, mod2)[2, "Pr(Chi)"])
+
 summary(mod2)
 # counts are not sig
 
 mod3 <- update(mod2, .~. - countS)
 anova(mod2, mod3)
 # remove
+
+mod_summ2 <- mod_summ %>%
+  add_row(Variable = "records in US",
+          ChiSq = anova(mod2, mod3)[2, "LR stat."],
+          df = anova(mod2, mod3)[2, "   df"],
+          P = anova(mod2, mod3)[2, "Pr(Chi)"])
 
 summary(mod3)
 
@@ -182,6 +193,21 @@ anova(mod3, mod5)
 
 mod6 <- update(mod3, .~. - earlYearS)
 anova(mod3, mod6)
+
+# model table
+mod_summ3 <- mod_summ2 %>%
+  add_row(Variable = "assessor",
+          ChiSq = anova(mod3, mod4)[2, "LR stat."],
+          df = anova(mod3, mod4)[2, "   df"],
+          P = anova(mod3, mod4)[2, "Pr(Chi)"]) %>%
+  add_row(Variable = "certainty",
+          ChiSq = anova(mod3, mod5)[2, "LR stat."],
+          df = anova(mod3, mod5)[2, "   df"],
+          P = anova(mod3, mod5)[2, "Pr(Chi)"]) %>%
+  add_row(Variable = "earliest US record",
+          ChiSq = anova(mod3, mod6)[2, "LR stat."],
+          df = anova(mod3, mod6)[2, "   df"],
+          P = anova(mod3, mod6)[2, "Pr(Chi)"])
 
 
 #### diagnostics ####

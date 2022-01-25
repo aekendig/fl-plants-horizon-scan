@@ -1051,7 +1051,7 @@ syn_cabi10[!complete.cases(syn_cabi10),] %>%
 # some occurrences missing
 
 # save
-write_csv(syn_cabi10, "intermediate-data/horizon_scan_all_names_plant_list_011522")
+write_csv(syn_cabi10, "intermediate-data/horizon_scan_all_names_plant_list_011522.csv")
 
 # summarize
 acc_fin <- syn_cabi10 %>%
@@ -1068,9 +1068,11 @@ acc_fin <- syn_cabi10 %>%
               summarize(Atlas = as.numeric(sum(Atlas) > 0),
                         climate = as.numeric(sum(climate) > 0),
                         acc_name_source = paste(unique(acc_name_source), collapse = ", ")) %>%
-              ungroup())
+              ungroup()) %>%
+  select(acc_name, synonyms, acc_name_source, climate, Atlas, fl_nox, fed_nox, naturalized, weedy, occurrences, occurrences_new)
+
 # 2071 taxa
-write_csv(acc_fin, "intermediate-data/horizon_scan_accepted_names_plant_list_011522")
+write_csv(acc_fin, "intermediate-data/horizon_scan_accepted_names_plant_list_011522.csv")
 
 # check for missing values
 acc_fin[!complete.cases(acc_fin),] %>%
