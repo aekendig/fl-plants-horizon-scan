@@ -17,7 +17,6 @@ Code and data for horizon scan of invasive plant threats to Florida. This reposi
 |risk_scores_analys.R             |R script to evaluate final risk scores |
 |pathways_process.R               |R script to process pathways to introduction data |
 |taxa_list_processing.R           |R script to create list used for rapid risk assessments from an initial list |
-|taxonomic_method_comparison.R    |R script to check consistency of taxa lists produced by original (initial commit) and revised taxonomic methods |
 
 |data                                                       |description |
 |:----------------------------------------------------------|:---------------------------------------------------------------|

@@ -15,6 +15,7 @@ library(cowplot)
 # import data
 hs <- read_csv("intermediate-data/horizon_scan_plants_full_reviews_080321.csv")
 gbif_keys <- read_csv("intermediate-data/gbif_taxonkeys_full_cabi_list_cleaned_062221.csv")
+# above obtained using the same methods as gbif_taxonkeys_full_cabi_list_cleaned_011522.csv in taxa_list_process.R
 
 
 #### edit data ####
