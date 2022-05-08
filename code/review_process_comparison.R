@@ -49,6 +49,7 @@ dat %>%
 # check normality of difference
 ggplot(dat, aes(x = Score.diff)) +
   geom_density()
+# most scores did not change before/after
 
 ggplot(dat, aes(sample = Score.diff)) +
   stat_qq() + stat_qq_line()
@@ -60,9 +61,27 @@ t.test(dat$Pre.score, dat$Post.score, paired = T)
 t.test(dat$Pre.score, dat$Post.score, paired = T, var.equal = T)
 # same result
 
-# values for text
+
+#### values for text ####
+
+# pre/post averages
 dat %>%
   summarise(Mean.pre = mean(Pre.score),
             SE.pre = sd(Pre.score)/sqrt(length(Pre.score)),
             Mean.post = mean(Post.score),
             SE.post = sd(Post.score)/sqrt(length(Post.score)))
+
+# high/medium/low categories
+dat2 <- dat %>%
+  mutate(Pre.category = case_when(Pre.score >= 64 ~ 3,
+                                  Pre.score < 64 & Pre.score >= 27 ~ 2,
+                                  Pre.score < 27 ~ 1),
+         Post.category = case_when(Post.score >= 64 ~ 3,
+                                   Post.score < 64 & Post.score >= 27 ~ 2,
+                                   Post.score < 27 ~ 1),
+         Category.diff = Post.category - Pre.category)
+
+# changes in category
+dat2 %>% count(Category.diff)
+dat2 %>% filter(Category.diff > 0)
+dat2 %>% filter(Category.diff < 0)

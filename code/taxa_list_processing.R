@@ -143,6 +143,13 @@ length(unique(species$Preferred.scientific.name))
 nrow(species) 
 # two species are repeated
 
+# databases per species
+plants %>%
+  mutate(Database = str_sub(`Datasheet.URL(s)`, 22, 24)) %>%
+  select(Preferred.scientific.name, Database) %>%
+  unique() %>%
+  count(Database)
+
 # export this list for the Taxonomic Name Resolution Service (TNRS)
 # write_tsv(species, "/intermediate-data/cabi_full_list_plants.txt", col_names = F)
 
