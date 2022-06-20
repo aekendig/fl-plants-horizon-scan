@@ -1,5 +1,5 @@
-# Scanning the horizon for invasive plant threats to Florida, USA
-Code and data for horizon scan of invasive plant threats to Florida. This repository accompanies the manuscript "Scanning the horizon for invasive plant threats to Florida, USA" by Amy E. Kendig, Susan Canavan, Patti J. Anderson, S. Luke Flory, Lyn A. Gettys, Doria R. Gordon, Basil V. Iannone III, John M. Kunzer, Tabitha Petri, Ian A. Pfingsten, and Deah Lieurance. An archived verion of this repository can be found here: [![DOI](https://zenodo.org/badge/402537200.svg)](https://zenodo.org/badge/latestdoi/402537200)
+# Scanning the horizon for invasive plant threats using a data-driven approach
+Code and data for horizon scan of invasive plant threats to Florida. This repository accompanies the manuscript "Scanning the horizon for invasive plant threats using a data-driven approach" by Amy E. Kendig, Susan Canavan, Patti J. Anderson, S. Luke Flory, Lyn A. Gettys, Doria R. Gordon, Basil V. Iannone III, John M. Kunzer, Tabitha Petri, Ian A. Pfingsten, and Deah Lieurance. An archived verion of this repository can be found here: [![DOI](https://zenodo.org/badge/402537200.svg)](https://zenodo.org/badge/latestdoi/402537200)
 
 
 ### Contents
